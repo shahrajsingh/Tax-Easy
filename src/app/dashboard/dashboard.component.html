@@ -1,0 +1,30 @@
+<div class="dash-container">
+  <mat-toolbar color="primary">
+    <button mat-icon-button (click)="snav.toggle()" [disabled]="!isAuth">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <h1 class="h1">Tax-Easy</h1>
+    <button
+      mat-raised-button
+      class="auth-btn"
+      *ngIf="isAuth"
+      (click)="logout()"
+    >
+      Logout
+    </button>
+    <button
+      mat-raised-button
+      class="auth-btn"
+      *ngIf="!isAuth"
+      routerLink="/login"
+    >
+      Login
+    </button>
+  </mat-toolbar>
+  <mat-sidenav-container class="sidenav-container">
+    <mat-sidenav class="sidenav" #snav><app-sidenav></app-sidenav></mat-sidenav>
+    <mat-sidenav-content class="sidenav-content">
+      <router-outlet></router-outlet>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>

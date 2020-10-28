@@ -1,0 +1,98 @@
+<mat-spinner *ngIf="isLoading"></mat-spinner>
+<div class="container">
+  <mat-card class="signup-card">
+    <mat-card-header>
+      <mat-card-title> Sign up </mat-card-title>
+    </mat-card-header>
+    <mat-divider></mat-divider>
+    <br />
+    <mat-card-content>
+      <form #signupform="ngForm" (submit)="signup(signupform)">
+        <mat-form-field appearance="outline">
+          <mat-label>Name</mat-label>
+          <input
+            matInput
+            name="name"
+            required
+            type="text"
+            ngModel
+            #name="ngModel"
+          />
+          <mat-error *ngIf="name.invalid">Name is required</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Company Name</mat-label>
+          <input
+            type="text"
+            matInput
+            name="cname"
+            ngModel
+            #cname="ngModel"
+            required
+            minlength="3"
+          />
+          <mat-error *ngIf="cname.invalid">Comapany name is required</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Email</mat-label>
+          <input
+            type="email"
+            required
+            minlength="8"
+            matInput
+            name="email"
+            ngModel
+            #email="ngModel"
+            placeholder="e.g:- johndoe@mail.com"
+          />
+          <mat-error *ngIf="email.invalid">Please enter a valid Mail</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Password</mat-label>
+          <input
+            type="password"
+            required
+            minlength="8"
+            matInput
+            name="password"
+            #password="ngModel"
+            ngModel
+          />
+          <mat-error *ngIf="password.invalid"
+            >Please enter a Password</mat-error
+          >
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Confirm Password</mat-label>
+          <input
+            type="password"
+            required
+            minlength="8"
+            matInput
+            name="cpassword"
+            #cpassword="ngModel"
+            ngModel
+          />
+          <mat-error *ngIf="cpassword.invalid"
+            >Please confirm a Password</mat-error
+          >
+        </mat-form-field>
+        <button
+          type="submit"
+          mat-raised-button
+          class="signup-btn"
+          color="primary"
+        >
+          Sign up
+        </button>
+      </form>
+      <br />
+      <mat-divider></mat-divider>
+      <br />
+      <h4>Already have a Tax Easy Account?</h4>
+      <button mat-raised-button color="accent" routerLink="/login">
+        Login
+      </button>
+    </mat-card-content>
+  </mat-card>
+</div>
