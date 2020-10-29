@@ -1,5 +1,20 @@
 <mat-selection-list [multiple]="false">
-  <mat-list-option routerLink="/" selected="true">Home</mat-list-option>
-  <mat-list-option routerLink="/inventory">Inventory</mat-list-option>
-  <mat-list-option routerLink="/bills">Bills</mat-list-option>
+  <mat-list-option routerLink="/" selected="true"
+    ><div class="opt">
+      <div class="opt-ico"><mat-icon>add</mat-icon></div>
+      <div class="opt-txt">Home</div>
+    </div></mat-list-option
+  >
+  <mat-list-option routerLink="/bills"
+    ><div class="opt">
+      <div class="opt-ico"><mat-icon>receipt</mat-icon></div>
+      <div class="opt-txt">Bills</div>
+    </div></mat-list-option
+  >
+  <mat-list-option class="opt" routerLink="/inventory"
+    ><div class="opt">
+      <div class="opt-ico"><mat-icon>store</mat-icon></div>
+      <div class="opt-txt">Inventory</div>
+    </div></mat-list-option
+  >
 </mat-selection-list>

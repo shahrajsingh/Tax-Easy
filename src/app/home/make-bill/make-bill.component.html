@@ -1,0 +1,41 @@
+<app-bill></app-bill>
+<div class="add-items">
+  <h2>Add Items</h2>
+  <form #itemform="ngForm" (submit)="addItem(itemform)">
+    <mat-form-field appearance="outline">
+      <mat-label>Item Name or Id Number</mat-label>
+      <input
+        name="item"
+        matInput
+        required
+        ngModel
+        minlength="3"
+        type="text"
+        #item="ngModel"
+        placeholder="e.g:- toy or 22313"
+      />
+      <mat-error *ngIf="item.invalid"> Id is required </mat-error>
+    </mat-form-field>
+    &nbsp;&nbsp;
+    <mat-form-field appearance="outline">
+      <mat-label>Quantity</mat-label>
+      <input
+        name="qty"
+        matInput
+        required
+        minlength="3"
+        type="number"
+        ngModel
+        #qty="ngModel"
+        placeholder="e.g:- 2"
+      />
+      <mat-error *ngIf="qty.invalid"> Qunatity is requierd </mat-error>
+    </mat-form-field>
+    &nbsp;&nbsp;
+    <div>
+      <button mat-raised-button class="btn" color="accent" type="submit">
+        <mat-icon>add</mat-icon>Add
+      </button>
+    </div>
+  </form>
+</div>

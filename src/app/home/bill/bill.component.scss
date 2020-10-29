@@ -1,0 +1,30 @@
+.bill-container {
+  width: 100%;
+  border: 1px solid black;
+  padding: 8px;
+}
+.company-name {
+  text-align: center;
+}
+.company-address {
+  text-align: center;
+}
+.invoice-details {
+  text-align: center;
+}
+table {
+  width: 100%;
+}
+td {
+  text-align: right;
+  padding: 0px 4px 0px 4px;
+}
+table,
+th,
+td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+.total {
+  text-align: right;
+}

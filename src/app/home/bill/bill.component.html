@@ -1,0 +1,39 @@
+<div class="bill-container">
+  <div class="company-name">
+    <h1>compnay</h1>
+  </div>
+  <div class="company-address">
+    <h3>Address</h3>
+  </div>
+  <mat-divider> </mat-divider>
+  <div class="invoice-details">
+    <h5>Invoice Number</h5>
+    <h5>Date</h5>
+  </div>
+  <mat-divider></mat-divider>
+  <br />
+  <table class="bill">
+    <tr>
+      <th>Item Name</th>
+      <th>Qty</th>
+      <th>Rate</th>
+      <th>Tax%</th>
+      <th>Tax</th>
+      <th>Amt</th>
+    </tr>
+    <tr *ngFor="let i of items">
+      <td>{{ i.ItemName }}</td>
+      <td>{{ i.Qty }}</td>
+      <td>{{ i.Rate }}</td>
+      <td>{{ i.Taxpercent }}</td>
+      <td>{{ i.Tax }}</td>
+      <td>{{ i.Amt }}</td>
+    </tr>
+  </table>
+  <div class="total" *ngIf="total != null || total != undefined">
+    <h2>Total Amount: Rs {{ total }}</h2>
+  </div>
+  <br />
+  <mat-divider></mat-divider>
+  <h5 style="text-align: center">Thank you for Shopping with Us :)</h5>
+</div>

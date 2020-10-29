@@ -1,1 +1,41 @@
-<p>home works!</p>
+<div class="home-container">
+  <div class="toolbar">
+    <app-toolbar-button
+      icon="add"
+      text="Make a Bill"
+      (click)="isMaking()"
+    ></app-toolbar-button>
+    <app-toolbar-button
+      routerLink="/bills"
+      icon="receipt"
+      text="View Bills"
+    ></app-toolbar-button>
+    <app-toolbar-button
+      routerLink="/inventory"
+      icon="store"
+      text="Inventory"
+    ></app-toolbar-button>
+  </div>
+  <div class="mob-toolbar">
+    <app-toolbar-button
+      icon="add"
+      text="Make a Bill"
+      (click)="isMaking()"
+    ></app-toolbar-button>
+  </div>
+
+  <mat-divider> </mat-divider>
+  <br />
+  <div class="placeholder" *ngIf="!isMakingBill"></div>
+  <div class="make-bill" *ngIf="isMakingBill">
+    <button
+      mat-raised-button
+      (click)="notMaking()"
+      class="cancel-btn"
+      color="warn"
+    >
+      <mat-icon>delete</mat-icon><a>Cancel</a>
+    </button>
+    <app-make-bill></app-make-bill>
+  </div>
+</div>

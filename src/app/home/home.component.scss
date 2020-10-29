@@ -1,0 +1,34 @@
+.home-container {
+}
+.toolbar {
+  display: flex;
+  width: 100%;
+  height: 100px;
+}
+.mob-toolbar {
+  display: none;
+}
+app-toolbar-button {
+  margin: auto;
+}
+.placeholder {
+  height: 68vh;
+}
+.cancel-btn {
+  height: 40px;
+  position: fixed;
+  right: 1%;
+}
+@media screen and (max-width: 600px) {
+  .toolbar {
+    display: none;
+  }
+  .mob-toolbar {
+    display: flex;
+    width: 100%;
+    height: 100px;
+  }
+  .cancel-btn a {
+    display: none;
+  }
+}
