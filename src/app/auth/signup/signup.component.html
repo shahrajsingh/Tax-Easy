@@ -14,6 +14,8 @@
             matInput
             name="name"
             required
+            maxlength="30"
+            minlength="2"
             type="text"
             ngModel
             #name="ngModel"
@@ -30,8 +32,23 @@
             #cname="ngModel"
             required
             minlength="3"
+            maxlength="50"
           />
           <mat-error *ngIf="cname.invalid">Comapany name is required</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Business Address</mat-label>
+          <input
+            type="text"
+            matInput
+            name="address"
+            ngModel
+            #address="ngModel"
+            required
+            minlength="3"
+            maxlength="50"
+          />
+          <mat-error *ngIf="address.invalid">Address is required</mat-error>
         </mat-form-field>
         <mat-form-field appearance="outline">
           <mat-label>Email</mat-label>
@@ -39,6 +56,7 @@
             type="email"
             required
             minlength="8"
+            maxlength="20"
             matInput
             name="email"
             ngModel
@@ -53,6 +71,7 @@
             type="password"
             required
             minlength="8"
+            maxlength="16"
             matInput
             name="password"
             #password="ngModel"
@@ -68,6 +87,7 @@
             type="password"
             required
             minlength="8"
+            maxlength="16"
             matInput
             name="cpassword"
             #cpassword="ngModel"

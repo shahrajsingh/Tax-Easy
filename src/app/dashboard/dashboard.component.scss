@@ -26,3 +26,8 @@
 .sidenav-content {
   padding: 0.5rem 1.5rem;
 }
+@media screen and (max-width: 600px) {
+  .sidenav-content {
+    padding: 0.5rem;
+  }
+}

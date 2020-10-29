@@ -5,6 +5,7 @@ import { AuthData } from "./authData.model";
 import { environment } from "../../environments/environment";
 import { UserData } from "./userData.model";
 import { HttpClient } from "@angular/common/http";
+
 const BACKEND_URL = environment.apiUrl + "/users";
 @Injectable({
   providedIn: "root",
@@ -35,6 +36,7 @@ export class AuthService {
     const authData: UserData = {
       Name: userData.Name,
       CompanyName: userData.CompanyName,
+      Address: userData.Address,
       Email: userData.Email,
       Password: userData.Password,
     };
@@ -137,5 +139,17 @@ export class AuthService {
       expirationDate: new Date(expirationDate),
       userId: userId,
     };
+  }
+  getUserData() {
+    const id = this.getUserId();
+    let data = {
+      CompanyName: null,
+      Address: null,
+    };
+    let dataFetched: boolean = false;
+    let timer: number = 0;
+    return this.http.get<{ message: string; result: any }>(
+      BACKEND_URL + "/" + id
+    );
   }
 }

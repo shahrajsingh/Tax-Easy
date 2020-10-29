@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { NgForm } from "@angular/forms";
+
 import { AuthService } from "../auth.service";
 import { UserData } from "../userData.model";
 
@@ -42,6 +43,7 @@ export class SignupComponent implements OnInit {
         Name: form.value.name,
         Email: Email,
         CompanyName: form.value.cname,
+        Address: form.value.address,
         Password: Password,
       };
       this.authService.signup(signupdata);

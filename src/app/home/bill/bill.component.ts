@@ -43,6 +43,10 @@ export class BillComponent implements OnInit, OnDestroy {
         this.items = billData.bill;
         this.total = billData.Total;
       });
+    this.authService.getUserData().subscribe((res) => {
+      (this.Address = res.result.address),
+        (this.CompanyName = res.result.companyName);
+    });
   }
   delete(x) {
     this.billService.delete(x);

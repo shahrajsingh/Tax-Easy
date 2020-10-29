@@ -1,1 +1,33 @@
-<p>inventory works!</p>
+<div class="inventory-container">
+  <div class="inventory-dashboard">
+    <button class="idb" mat-raised-button color="primary" (click)="additem()">
+      <mat-icon>add</mat-icon>Add item
+    </button>
+    <button
+      class="idb"
+      mat-raised-button
+      matBadge="8"
+      color="accent"
+      (click)="sLS()"
+    >
+      <mat-icon>low_priority</mat-icon>
+      Low Stock
+    </button>
+    <button
+      (click)="sOS()"
+      class="idb"
+      mat-raised-button
+      color="warn"
+      matBadge="8"
+      matBadgeColor="primary"
+    >
+      <mat-icon>warning</mat-icon>
+      Out of Stock
+    </button>
+  </div>
+  <mat-divider></mat-divider>
+  <div class="add" *ngIf="addItem">1</div>
+  <div class="sLS" *ngIf="seeLowStock">2</div>
+  <div class="sOS" *ngIf="seeOutofStock">3</div>
+  <div class="inventory-list"></div>
+</div>
