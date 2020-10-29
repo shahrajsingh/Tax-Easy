@@ -1,14 +1,14 @@
 <div class="bill-container">
   <div class="company-name">
-    <h1>compnay</h1>
+    <h1>{{ CompanyName }}</h1>
   </div>
   <div class="company-address">
-    <h3>Address</h3>
+    <h3>{{ Address }}</h3>
   </div>
   <mat-divider> </mat-divider>
   <div class="invoice-details">
-    <h5>Invoice Number</h5>
-    <h5>Date</h5>
+    <h5>Invoice Number:- {{ InvoiceNumber }}</h5>
+    <h5>Date:- {{ Date }}</h5>
   </div>
   <mat-divider></mat-divider>
   <br />
@@ -21,13 +21,16 @@
       <th>Tax</th>
       <th>Amt</th>
     </tr>
-    <tr *ngFor="let i of items">
-      <td>{{ i.ItemName }}</td>
+    <tr *ngFor="let i of items; let j = index">
+      <td style="text-align: center">{{ i.ItemName }}</td>
       <td>{{ i.Qty }}</td>
       <td>{{ i.Rate }}</td>
       <td>{{ i.Taxpercent }}</td>
       <td>{{ i.Tax }}</td>
-      <td>{{ i.Amt }}</td>
+      <td style="text-align: right">{{ i.Amt }}</td>
+      <td class="cancel" (click)="delete(j)">
+        <mat-icon class="cancel-ico">clear</mat-icon>
+      </td>
     </tr>
   </table>
   <div class="total" *ngIf="total != null || total != undefined">

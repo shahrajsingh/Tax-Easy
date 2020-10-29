@@ -1,5 +1,6 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnDestroy, OnInit } from "@angular/core";
 import { Subscription } from "rxjs";
+import { AuthService } from "src/app/auth/auth.service";
 import { Bill } from "../bill.model";
 import { BillService } from "../bill.service";
 
@@ -8,18 +9,45 @@ import { BillService } from "../bill.service";
   templateUrl: "./bill.component.html",
   styleUrls: ["./bill.component.scss"],
 })
-export class BillComponent implements OnInit {
-  total: Number;
+export class BillComponent implements OnInit, OnDestroy {
+  d = new Date();
+  CompanyName: string;
+  Address: string;
+  InvoiceNumber: string;
+  Date =
+    this.d.getDate() +
+    "/" +
+    (this.d.getMonth() + 1) +
+    "/" +
+    this.d.getFullYear() +
+    " " +
+    this.d.getHours() +
+    ":" +
+    this.d.getMinutes() +
+    ":" +
+    this.d.getSeconds() +
+    ":" +
+    this.d.getSeconds();
+  total: number;
   items: Bill[] = [];
   billupdatesub: Subscription;
-  constructor(private billService: BillService) {}
+  constructor(
+    private billService: BillService,
+    private authService: AuthService
+  ) {}
 
   ngOnInit(): void {
     this.billupdatesub = this.billService
       .billupdated()
-      .subscribe((res: Bill[]) => {
-        this.items = res;
-        console.log(this.items);
+      .subscribe((billData: { bill: Bill[]; Total: number }) => {
+        this.items = billData.bill;
+        this.total = billData.Total;
       });
+  }
+  delete(x) {
+    this.billService.delete(x);
+  }
+  ngOnDestroy() {
+    this.billupdatesub.unsubscribe();
   }
 }

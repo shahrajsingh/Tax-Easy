@@ -23,6 +23,7 @@ import { MatListModule } from "@angular/material/list";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
 import { MatRippleModule } from "@angular/material/core";
+import { MatTableModule } from "@angular/material/table";
 
 import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
 import { FormsModule } from "@angular/forms";
@@ -30,7 +31,7 @@ import { AuthInterceptor } from "./auth/auth-interceptor";
 import { AuthGuard } from "./auth/auth.guard";
 import { ToolbarButtonComponent } from "./toolbar-button/toolbar-button.component";
 import { MakeBillComponent } from "./home/make-bill/make-bill.component";
-import { BillComponent } from './home/bill/bill.component';
+import { BillComponent } from "./home/bill/bill.component";
 
 @NgModule({
   declarations: [
@@ -61,6 +62,7 @@ import { BillComponent } from './home/bill/bill.component';
     MatInputModule,
     MatFormFieldModule,
     MatRippleModule,
+    MatTableModule,
     HttpClientModule,
     FormsModule,
   ],
