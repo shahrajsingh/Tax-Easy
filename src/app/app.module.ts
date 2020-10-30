@@ -23,8 +23,10 @@ import { MatListModule } from "@angular/material/list";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
 import { MatRippleModule } from "@angular/material/core";
+//remove table
 import { MatTableModule } from "@angular/material/table";
 import { MatBadgeModule } from "@angular/material/badge";
+import { MatPaginatorModule } from "@angular/material/paginator";
 
 import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
 import { FormsModule } from "@angular/forms";
@@ -33,10 +35,10 @@ import { AuthGuard } from "./auth/auth.guard";
 import { ToolbarButtonComponent } from "./toolbar-button/toolbar-button.component";
 import { MakeBillComponent } from "./home/make-bill/make-bill.component";
 import { BillComponent } from "./home/bill/bill.component";
-import { LowStockComponent } from './inventory/low-stock/low-stock.component';
-import { OutOfStockComponent } from './inventory/out-of-stock/out-of-stock.component';
-import { AddItemComponent } from './inventory/add-item/add-item.component';
-import { InventoryListComponent } from './inventory/inventory-list/inventory-list.component';
+import { LowStockComponent } from "./inventory/low-stock/low-stock.component";
+import { OutOfStockComponent } from "./inventory/out-of-stock/out-of-stock.component";
+import { AddItemComponent } from "./inventory/add-item/add-item.component";
+import { InventoryListComponent } from "./inventory/inventory-list/inventory-list.component";
 
 @NgModule({
   declarations: [
@@ -73,6 +75,7 @@ import { InventoryListComponent } from './inventory/inventory-list/inventory-lis
     MatRippleModule,
     MatTableModule,
     MatBadgeModule,
+    MatPaginatorModule,
     HttpClientModule,
     FormsModule,
   ],

@@ -26,8 +26,11 @@
     </button>
   </div>
   <mat-divider></mat-divider>
-  <div class="add" *ngIf="addItem">1</div>
-  <div class="sLS" *ngIf="seeLowStock">2</div>
-  <div class="sOS" *ngIf="seeOutofStock">3</div>
-  <div class="inventory-list"></div>
+  <div class="add" *ngIf="addItem"><app-add-item></app-add-item></div>
+  <div class="sLS" *ngIf="seeLowStock"><app-low-stock></app-low-stock></div>
+  <div class="sOS" *ngIf="seeOutofStock">
+    <app-out-of-stock></app-out-of-stock>
+  </div>
+  <mat-divider *ngIf="addItem || seeLowStock || seeOutofStock"></mat-divider>
+  <div class="inventory-list"><app-inventory-list></app-inventory-list></div>
 </div>

@@ -15,6 +15,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.authService.autoAuthUser();
     this.isAuth = this.authService.getIsAuth();
+
     this.authListenerSub = this.authService
       .getAuthStatusListener()
       .subscribe((res: boolean) => {

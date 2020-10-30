@@ -8,4 +8,26 @@
 
 .idb {
   margin: auto;
+  width: 150px;
+}
+@media screen and (max-width: 500px) {
+  .inventory-dashboard {
+    display: inline-block;
+    height: 108px;
+    line-break: auto;
+  }
+  .idb {
+    margin: 8px 16px;
+  }
+}
+@media screen and (max-width: 340px) {
+  .inventory-dashboard {
+    display: inline-block;
+    height: 160px;
+    line-break: auto;
+  }
+  .idb {
+    margin: 0.5rem 1rem;
+    width: 130px;
+  }
 }
