@@ -1,1 +1,64 @@
-<p>add-item works!</p>
+<br />
+<div class="add-item-container">
+  <mat-card>
+    <form #itemForm="ngForm">
+      <mat-form-field appearance="outline">
+        <mat-label>Item Name</mat-label>
+        <input
+          type="text"
+          matInput
+          name="itemName"
+          maxlength="30"
+          minlength="3"
+          ngModel
+          #itemName="ngModel"
+          required
+        />
+        <mat-error *ngIf="itemName.invalid">Item Name is required</mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>HSN Code</mat-label>
+        <input
+          type="number"
+          matInput
+          name="hsn"
+          maxlength="30"
+          minlength="3"
+          ngModel
+          #hsn="ngModel"
+          required
+        />
+        <mat-error *ngIf="hsn.invalid">HSN is required</mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Item Quantity</mat-label>
+        <input
+          type="number"
+          matInput
+          name="qty"
+          ngModel
+          #qty="ngModel"
+          required
+        />
+        <mat-error *ngIf="qty.invalid">Quantity is Required</mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Rate</mat-label>
+        <input
+          type="number"
+          matInput
+          name="rate"
+          ngModel
+          #rate="ngModel"
+          required
+        />
+        <mat-error *ngIf="rate.invalid">Rate is required</mat-error>
+      </mat-form-field>
+      <br />
+      <button mat-raised-button color="primary">
+        <mat-icon>login</mat-icon>&nbsp; Add Item
+      </button>
+    </form>
+  </mat-card>
+</div>
+<br />

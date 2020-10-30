@@ -18,8 +18,11 @@
 .trth {
   border: none;
 }
+tr:nth-child(odd) {
+  background-color: #f0f0f0;
+}
 tr:nth-child(even) {
-  background-color: #f2f2f2;
+  background-color: #e0e0e0;
 }
 th {
   padding: 1rem 0.5rem 1rem 0.5rem;

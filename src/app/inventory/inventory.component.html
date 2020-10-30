@@ -27,10 +27,35 @@
   </div>
   <mat-divider></mat-divider>
   <div class="add" *ngIf="addItem"><app-add-item></app-add-item></div>
-  <div class="sLS" *ngIf="seeLowStock"><app-low-stock></app-low-stock></div>
+  <div class="sLS" *ngIf="seeLowStock">
+    <h1>Low on Stock</h1>
+    <h4 style="text-align: center" *ngIf="lowStock.length <= 0">
+      Looks like you have no Low Stock items !
+    </h4>
+    <app-inventory-list
+      [inventory]="lowStock"
+      *ngIf="lowStock.length > 0"
+    ></app-inventory-list>
+  </div>
   <div class="sOS" *ngIf="seeOutofStock">
-    <app-out-of-stock></app-out-of-stock>
+    <h1>Out of Stock</h1>
+    <h4 style="text-align: center" *ngIf="outOfStock.length <= 0">
+      Looks like you have no Out of Stock items !
+    </h4>
+    <app-inventory-list
+      [inventory]="outOfStock"
+      *ngIf="outOfStock.length > 0"
+    ></app-inventory-list>
   </div>
   <mat-divider *ngIf="addItem || seeLowStock || seeOutofStock"></mat-divider>
-  <div class="inventory-list"><app-inventory-list></app-inventory-list></div>
+  <div class="inventory-list">
+    <h1>My Inventory</h1>
+    <h4 style="text-align: center" *ngIf="inventory.length <= 0">
+      Looks like you have not added any items to inventory !
+    </h4>
+    <app-inventory-list
+      [inventory]="inventory"
+      *ngIf="inventory.length > 0"
+    ></app-inventory-list>
+  </div>
 </div>
