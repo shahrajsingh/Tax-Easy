@@ -38,6 +38,7 @@ import { BillComponent } from "./home/bill/bill.component";
 
 import { AddItemComponent } from "./inventory/add-item/add-item.component";
 import { InventoryListComponent } from "./inventory/inventory-list/inventory-list.component";
+import { ViewBillComponent } from './bills/view-bill/view-bill.component';
 
 @NgModule({
   declarations: [
@@ -54,6 +55,7 @@ import { InventoryListComponent } from "./inventory/inventory-list/inventory-lis
     BillComponent,
     AddItemComponent,
     InventoryListComponent,
+    ViewBillComponent,
   ],
   imports: [
     BrowserModule,

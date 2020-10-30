@@ -1,0 +1,61 @@
+.bill-container {
+  width: 100%;
+  border: 1px solid black;
+  padding: 8px;
+}
+.company-name {
+  text-align: center;
+}
+.company-address {
+  text-align: center;
+}
+.invoice-details {
+  text-align: left;
+}
+table {
+  width: 100%;
+}
+td {
+  text-align: left;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+  min-width: 30px;
+  padding: 0px 4px 0px 4px;
+}
+table,
+th,
+td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+.cancel {
+  width: 26px;
+  padding: 0px;
+  font-size: 26px;
+  background-color: #1d0d0d;
+  color: white;
+  cursor: pointer;
+  transition: 0.1s;
+}
+.cancel:hover {
+  background-color: red;
+
+  text-shadow: 3px 3px 3px rgba($color: #000000, $alpha: 1);
+}
+.cancel:hover .cancel-ico {
+  font-weight: 600;
+}
+.cancel-ico {
+  margin-top: 2px;
+  margin-left: 3px;
+}
+.total {
+  text-align: right;
+}
+@media screen and (max-width: 600px) {
+  .td {
+    max-width: 80px;
+    padding: 0px 1px 0px 1px;
+  }
+}

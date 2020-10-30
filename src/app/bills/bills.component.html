@@ -1,1 +1,17 @@
-<p>bills works!</p>
+<h4 style="text-align: center" *ngIf="bills.length <= 0">
+  Looks Like you have not made any bills yet!
+</h4>
+<div class="bill-container" *ngIf="bills.length > 0">
+  <table>
+    <tr class="trth">
+      <th>Invoice No.</th>
+      <th>Issued To</th>
+      <th>Issue Date</th>
+    </tr>
+    <tr *ngFor="let i of bills" (click)="viewBill(i._id)">
+      <td>{{ i._id }}</td>
+      <td>{{ i.issuedTo }}</td>
+      <td>{{ i.Date }}</td>
+    </tr>
+  </table>
+</div>
