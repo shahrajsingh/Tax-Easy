@@ -7,105 +7,195 @@
     <mat-divider></mat-divider>
     <br />
     <mat-card-content>
-      <form #signupform="ngForm" (submit)="signup(signupform)">
-        <mat-form-field appearance="outline">
-          <mat-label>Name</mat-label>
-          <input
-            matInput
-            name="name"
-            required
-            maxlength="30"
-            minlength="2"
-            type="text"
-            ngModel
-            #name="ngModel"
-          />
-          <mat-error *ngIf="name.invalid">Name is required</mat-error>
-        </mat-form-field>
-        <mat-form-field appearance="outline">
-          <mat-label>Company Name</mat-label>
-          <input
-            type="text"
-            matInput
-            name="cname"
-            ngModel
-            #cname="ngModel"
-            required
-            minlength="3"
-            maxlength="50"
-          />
-          <mat-error *ngIf="cname.invalid">Comapany name is required</mat-error>
-        </mat-form-field>
-        <mat-form-field appearance="outline">
-          <mat-label>Business Address</mat-label>
-          <input
-            type="text"
-            matInput
-            name="address"
-            ngModel
-            #address="ngModel"
-            required
-            minlength="3"
-            maxlength="50"
-          />
-          <mat-error *ngIf="address.invalid">Address is required</mat-error>
-        </mat-form-field>
-        <mat-form-field appearance="outline">
-          <mat-label>Email</mat-label>
-          <input
-            type="email"
-            required
-            minlength="8"
-            maxlength="20"
-            matInput
-            name="email"
-            ngModel
-            #email="ngModel"
-            placeholder="e.g:- johndoe@mail.com"
-          />
-          <mat-error *ngIf="email.invalid">Please enter a valid Mail</mat-error>
-        </mat-form-field>
-        <mat-form-field appearance="outline">
-          <mat-label>Password</mat-label>
-          <input
-            type="password"
-            required
-            minlength="8"
-            maxlength="16"
-            matInput
-            name="password"
-            #password="ngModel"
-            ngModel
-          />
-          <mat-error *ngIf="password.invalid"
-            >Please enter a Password</mat-error
+      <mat-vertical-stepper [linear]="true" #stepper *ngIf="!isLoading">
+        <!--Personal Details Form begin-->
+        <mat-step [stepControl]="personaldetiailsform.control">
+          <ng-template matStepLabel>Personal Details</ng-template>
+          <form
+            #personaldetiailsform="ngForm"
+            (ngSubmit)="personaldetails(personaldetiailsform)"
           >
-        </mat-form-field>
-        <mat-form-field appearance="outline">
-          <mat-label>Confirm Password</mat-label>
-          <input
-            type="password"
-            required
-            minlength="8"
-            maxlength="16"
-            matInput
-            name="cpassword"
-            #cpassword="ngModel"
-            ngModel
-          />
-          <mat-error *ngIf="cpassword.invalid"
-            >Please confirm a Password</mat-error
+            <mat-form-field appearance="outline">
+              <mat-label>Name</mat-label>
+              <input
+                matInput
+                name="name"
+                required
+                maxlength="30"
+                minlength="2"
+                type="text"
+                ngModel
+                #name="ngModel"
+              />
+              <mat-error *ngIf="name.invalid">Name is required</mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Company Name</mat-label>
+              <input
+                type="text"
+                matInput
+                name="cname"
+                ngModel
+                #cname="ngModel"
+                required
+                minlength="3"
+                maxlength="50"
+              />
+              <mat-error *ngIf="cname.invalid"
+                >Comapany name is required</mat-error
+              >
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Business Address</mat-label>
+              <input
+                type="text"
+                matInput
+                name="address"
+                ngModel
+                #address="ngModel"
+                required
+                minlength="3"
+                maxlength="50"
+              />
+              <mat-error *ngIf="address.invalid">Address is required</mat-error>
+            </mat-form-field>
+            <div>
+              <button mat-button type="submit" matStepperNext color="primary">
+                Next
+              </button>
+            </div>
+          </form>
+        </mat-step>
+        <!--Personal details form end-->
+        <!--Preferences details form begin-->
+        <mat-step [stepControl]="preferenceform.control">
+          <form
+            #preferenceform="ngForm"
+            (ngSubmit)="preferences(preferenceform)"
           >
-        </mat-form-field>
-        <button
-          type="submit"
-          mat-raised-button
-          class="signup-btn"
-          color="primary"
-        >
-          Sign up
-        </button>
-      </form>
+            <ng-template matStepLabel>Preferences</ng-template>
+            <h3>
+              Minimum item Quantity at which a Low Stock alert be created.
+            </h3>
+            <mat-form-field>
+              <mat-label>Alert me when Quantity is less than</mat-label>
+              <input
+                matInput
+                name="qtyalert"
+                required
+                ngModel
+                type="number"
+                #qtyalert="ngModel"
+              />
+              <mat-error *ngIf="qtyalert.invalid"></mat-error>
+            </mat-form-field>
+            <h3>What should be the Product Id System?</h3>
+            <mat-radio-group [(ngModel)]="id" name="idradio">
+              <mat-radio-button value="auto">Auto ID System</mat-radio-button>
+              &nbsp; &nbsp;
+              <mat-radio-button value="manual"
+                >Manual ID System</mat-radio-button
+              >
+            </mat-radio-group>
+
+            <mat-form-field *ngIf="id === 'manual'">
+              <mat-label>Enter the First Id</mat-label>
+              <input
+                matInput
+                #mid="ngModel"
+                ngModel
+                name="mid"
+                required
+                minlength="1"
+                placeholder="e.g:-1000"
+                type="number"
+              />
+              <mat-hint>Id Should be atleast 1 character long</mat-hint>
+              <mat-error *ngIf="mid.invalid">Id is required</mat-error>
+            </mat-form-field>
+          </form>
+          <div>
+            <button mat-button type="submit" matStepperNext color="primary">
+              Next
+            </button>
+            <button mat-button matStepperPrevious>Back</button>
+          </div>
+        </mat-step>
+        <!--Preferences details form end-->
+        <!--Account Details form begin-->
+        <mat-step [stepControl]="accountform.control">
+          <form #accountform="ngForm" (ngSubmit)="accountdetails(accountform)">
+            <ng-template matStepLabel>Account Details</ng-template>
+            <mat-form-field appearance="outline">
+              <mat-label>Email</mat-label>
+              <input
+                type="email"
+                required
+                minlength="8"
+                maxlength="20"
+                matInput
+                name="email"
+                ngModel
+                #email="ngModel"
+                placeholder="e.g:- johndoe@mail.com"
+              />
+              <mat-error *ngIf="email.invalid"
+                >Please enter a valid Mail</mat-error
+              >
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Password</mat-label>
+              <input
+                type="password"
+                required
+                minlength="8"
+                maxlength="16"
+                matInput
+                name="password"
+                #password="ngModel"
+                ngModel
+              />
+              <mat-error *ngIf="password.invalid"
+                >Please enter a Password</mat-error
+              >
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Confirm Password</mat-label>
+              <input
+                type="password"
+                required
+                minlength="8"
+                maxlength="16"
+                matInput
+                name="cpassword"
+                #cpassword="ngModel"
+                ngModel
+              />
+              <mat-error *ngIf="cpassword.invalid"
+                >Please confirm a Password</mat-error
+              >
+            </mat-form-field>
+          </form>
+          <div>
+            <button
+              mat-raised-button
+              type="button"
+              (click)="
+                preferenceform.ngSubmit.emit(); accountform.ngSubmit.emit()
+              "
+              color="primary"
+            >
+              Submit
+            </button>
+            <button mat-button matStepperPrevious>Back</button>
+            <button mat-button color="warn" (click)="stepper.reset()">
+              Reset
+            </button>
+          </div>
+        </mat-step>
+        <!--Account details form end-->
+      </mat-vertical-stepper>
+
       <br />
       <mat-divider></mat-divider>
       <br />

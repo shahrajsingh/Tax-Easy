@@ -4,4 +4,7 @@ export interface UserData {
   Address: string;
   Email: string;
   Password: string;
+  AlertQty: number;
+  IdSys: string;
+  Product_ID_Initial: number;
 }

@@ -5,13 +5,17 @@ const user = require("../Models/user");
 const User = require("../Models/user");
 
 exports.createUser = (req, res, next) => {
+  console.log(req.body);
   bcrypt.hash(req.body.Password, 10).then((hash) => {
     const user = new User({
-      name: req.body.Name,
-      companyName: req.body.CompanyName,
-      address: req.body.Address,
-      email: req.body.Email,
-      password: hash,
+      Name: req.body.Name,
+      CompanyName: req.body.CompanyName,
+      Address: req.body.Address,
+      Email: req.body.Email,
+      Password: hash,
+      AlertQty: req.body.AlertQty,
+      IdSys: req.body.IdSys,
+      Product_ID_Initial: req.body.Product_ID_Initial,
     });
     user
       .save()
@@ -32,15 +36,17 @@ exports.createUser = (req, res, next) => {
 
 exports.userLogin = (req, res, next) => {
   let fetchedUser;
-  User.findOne({ email: req.body.email })
+  console.log(req.body);
+  User.findOne({ Email: req.body.email })
     .then((user) => {
       if (!user) {
+        console.log();
         return res.status(401).json({
           message: "Auth failed",
         });
       }
       fetchedUser = user;
-      return bcrypt.compare(req.body.password, user.password);
+      return bcrypt.compare(req.body.password, user.Password);
     })
     .then((result) => {
       if (!result) {
@@ -72,26 +78,26 @@ exports.getUser = (req, res, next) => {
   user
     .findById({ _id: id })
     .then((result) => {
-      if(result){
+      if (result) {
         const data = {
-            companyName: result.companyName,
-            address: result.address,
-        }
+          companyName: result.companyName,
+          address: result.address,
+        };
         res.status(200).json({
-          message: 'data found!',
-          result: data
+          message: "data found!",
+          result: data,
         });
-      }else{
+      } else {
         res.status(401).json({
-          message: 'no data found!',
-          result: null
+          message: "no data found!",
+          result: null,
         });
       }
     })
-    .catch(err=>{
+    .catch((err) => {
       res.status(500).json({
-        message: 'Error occured at 93',
-        result: error
-      })
+        message: "Error occured at 93",
+        result: error,
+      });
     });
 };

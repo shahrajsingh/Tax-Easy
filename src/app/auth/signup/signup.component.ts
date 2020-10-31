@@ -11,13 +11,44 @@ import { UserData } from "../userData.model";
 })
 export class SignupComponent implements OnInit {
   isLoading: boolean;
+  id = "auto";
+  signupdata: UserData = {
+    Name: null,
+    CompanyName: null,
+    Address: null,
+    Email: null,
+    Password: null,
+    IdSys: null,
+    Product_ID_Initial: null,
+    AlertQty: null,
+  };
   constructor(private authService: AuthService) {}
 
   ngOnInit(): void {
     this.isLoading = true;
     setTimeout(() => (this.isLoading = false), 1500);
   }
-  signup(form: NgForm) {
+  personaldetails(form: NgForm) {
+    if (form.invalid) {
+      return;
+    } else {
+    }
+    this.signupdata.Name = form.value.name;
+    this.signupdata.CompanyName = form.value.cname;
+    this.signupdata.Address = form.value.address;
+    console.log("details taken");
+  }
+  preferences(form: NgForm) {
+    if (form.invalid) {
+      return;
+    } else {
+      this.signupdata.AlertQty = form.value.qtyalert;
+      this.signupdata.IdSys = this.id;
+      this.signupdata.Product_ID_Initial = form.value.mid;
+    }
+    console.log("preferences taken");
+  }
+  accountdetails(form: NgForm) {
     if (form.invalid) {
       return;
     } else {
@@ -30,6 +61,7 @@ export class SignupComponent implements OnInit {
         alert("enter a valid email");
         return;
       }
+      this.signupdata.Email = Email;
       let Password: string = form.value.password;
       if (!/^[a-zA-Z0-9]*$/.test(Password) || Password.length < 8) {
         alert("enter a valid password");
@@ -39,14 +71,10 @@ export class SignupComponent implements OnInit {
         alert("password mismatch!");
         return;
       }
-      const signupdata: UserData = {
-        Name: form.value.name,
-        Email: Email,
-        CompanyName: form.value.cname,
-        Address: form.value.address,
-        Password: Password,
-      };
-      this.authService.signup(signupdata);
+      this.signupdata.Password = Password;
+      console.log("sending form" + this.signupdata.Password);
+
+      this.authService.signup(this.signupdata);
     }
   }
 }
