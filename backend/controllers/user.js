@@ -1,11 +1,11 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const user = require("../Models/user");
 
-const User = require("../Models/user");
+const Inventory = require("../models/inventory");
+
+const User = require("../models/user");
 
 exports.createUser = (req, res, next) => {
-  console.log(req.body);
   bcrypt.hash(req.body.Password, 10).then((hash) => {
     const user = new User({
       Name: req.body.Name,
@@ -36,7 +36,7 @@ exports.createUser = (req, res, next) => {
 
 exports.userLogin = (req, res, next) => {
   let fetchedUser;
-  console.log(req.body);
+
   User.findOne({ Email: req.body.email })
     .then((user) => {
       if (!user) {
@@ -63,6 +63,7 @@ exports.userLogin = (req, res, next) => {
         token: token,
         expiresIn: 3600 * 8,
         userId: fetchedUser._id,
+        Ls: fetchedUser.AlertQty,
       });
     })
     .catch((err) => {
@@ -75,13 +76,12 @@ exports.userLogin = (req, res, next) => {
 
 exports.getUser = (req, res, next) => {
   const id = req.params.id;
-  user
-    .findById({ _id: id })
+  User.findById({ _id: id })
     .then((result) => {
       if (result) {
         const data = {
-          companyName: result.companyName,
-          address: result.address,
+          companyName: result.CompanyName,
+          address: result.Address,
         };
         res.status(200).json({
           message: "data found!",
@@ -97,7 +97,70 @@ exports.getUser = (req, res, next) => {
     .catch((err) => {
       res.status(500).json({
         message: "Error occured at 93",
+        result: err,
+      });
+    });
+};
+
+exports.addItem = (req, res, next) => {
+  const item = new Inventory({
+    ItemName: req.body.ItemName,
+    HSN: req.body.Hsn,
+    Qty: req.body.Qty,
+    Rate: req.body.Rate,
+  });
+
+  item
+    .save()
+    .then((result) => {
+      const item = result;
+      User.findByIdAndUpdate(
+        { _id: req.body.id },
+        { $push: { Inventory: item } }
+      )
+        .then((result) => {
+          res.status(201).json({
+            message: "Item Added Successfully",
+            result: result,
+          });
+        })
+        .catch((error) => {
+          res.status(500).json({
+            message: "Item could not be added",
+            result: error,
+          });
+        });
+    })
+    .catch((error) => {
+      res.status(500).json({
+        message: "Item could not be created",
         result: error,
+      });
+    });
+  res.status(400);
+};
+
+exports.getInventory = (req, res, next) => {
+  const id = req.params.id;
+  User.findById({ _id: id })
+    .then((result) => {
+      console.log(result.Inventory);
+      if (result) {
+        res.status(200).json({
+          message: "data found",
+          result: result.Inventory,
+        });
+      } else {
+        res.status(401).json({
+          message: "user not found",
+          result: "no data",
+        });
+      }
+    })
+    .catch((err) => {
+      res.status(500).json({
+        message: "error has occured",
+        result: err,
       });
     });
 };

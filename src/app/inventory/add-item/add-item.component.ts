@@ -18,7 +18,7 @@ export class AddItemComponent implements OnInit {
       ItemName: form.value.itemName,
       Qty: form.value.qty,
       Rate: form.value.rate,
-      TaxPercent: form.value.hsn,
+      Hsn: form.value.hsn,
     };
     this.inventoryService.addToInventory(data);
   }

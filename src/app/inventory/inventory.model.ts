@@ -3,5 +3,5 @@ export interface Inventory {
   ItemName: string;
   Rate: number;
   Qty: number;
-  TaxPercent: number;
+  Hsn: number;
 }

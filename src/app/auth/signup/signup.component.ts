@@ -36,7 +36,6 @@ export class SignupComponent implements OnInit {
     this.signupdata.Name = form.value.name;
     this.signupdata.CompanyName = form.value.cname;
     this.signupdata.Address = form.value.address;
-    console.log("details taken");
   }
   preferences(form: NgForm) {
     if (form.invalid) {
@@ -46,7 +45,6 @@ export class SignupComponent implements OnInit {
       this.signupdata.IdSys = this.id;
       this.signupdata.Product_ID_Initial = form.value.mid;
     }
-    console.log("preferences taken");
   }
   accountdetails(form: NgForm) {
     if (form.invalid) {
@@ -72,7 +70,6 @@ export class SignupComponent implements OnInit {
         return;
       }
       this.signupdata.Password = Password;
-      console.log("sending form" + this.signupdata.Password);
 
       this.authService.signup(this.signupdata);
     }

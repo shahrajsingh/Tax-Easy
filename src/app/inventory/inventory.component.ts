@@ -14,13 +14,7 @@ export class InventoryComponent implements OnInit {
   addItem: boolean = false;
   lowStockCout: number;
   outOfStockCount: number;
-  inventory: Inventory[] = [
-    { _id: "1", ItemName: "First Name", Qty: 4, TaxPercent: 5, Rate: 124 },
-    { _id: "2", ItemName: "First Name", Qty: 4, TaxPercent: 5, Rate: 124 },
-    { _id: "3", ItemName: "First Name", Qty: 4, TaxPercent: 5, Rate: 124 },
-    { _id: "4", ItemName: "First Name", Qty: 4, TaxPercent: 5, Rate: 124 },
-    { _id: "5", ItemName: "First Name", Qty: 4, TaxPercent: 5, Rate: 124 },
-  ];
+  inventory: Inventory[] = [];
   lowStock: Inventory[] = [];
   outOfStock: Inventory[] = [];
   inventoryUpdatedSud: Subscription;
@@ -32,6 +26,7 @@ export class InventoryComponent implements OnInit {
       .subscribe((res: Inventory[]) => {
         this.inventory = res;
       });
+    this.inventoryService.getInventory();
   }
   sLS() {
     this.seeOutofStock = false;

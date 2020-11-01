@@ -3,7 +3,6 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 
 const userRoutes = require("./Routes/user");
-
 const app = express();
 
 mongoose
@@ -15,7 +14,12 @@ mongoose
       "Inventory-billing" +
       "?retryWrites=true&w=majority",
 
-    { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true }
+    {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      useCreateIndex: true,
+      useFindAndModify: false,
+    }
   )
   .then(() => {
     console.log("Connected to database!");

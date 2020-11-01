@@ -1,7 +1,7 @@
 <br />
 <div class="add-item-container">
   <mat-card>
-    <form #itemForm="ngForm">
+    <form #itemForm="ngForm" (submit)="additem(itemForm)">
       <mat-form-field appearance="outline">
         <mat-label>Item Name</mat-label>
         <input
@@ -55,7 +55,7 @@
         <mat-error *ngIf="rate.invalid">Rate is required</mat-error>
       </mat-form-field>
       <br />
-      <button mat-raised-button color="primary">
+      <button mat-raised-button color="primary" type="submit">
         <mat-icon>login</mat-icon>&nbsp; Add Item
       </button>
     </form>
