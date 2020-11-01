@@ -11,8 +11,20 @@ const BACKEND_URL = environment.apiUrl + "/users";
 export class InventoryService {
   inventory: Inventory[] = [];
   InventoryUpdated = new Subject();
-  getLowStock() {}
-  getOutofStock() {}
+  getLowStock() {
+    const id = localStorage.getItem("userId");
+
+    return this.http.get<{ message: string; result: Inventory[] }>(
+      BACKEND_URL + "/getlowstock/" + id
+    );
+  }
+  getOutofStock() {
+    const id = localStorage.getItem("userId");
+
+    return this.http.get<{ message: string; result: Inventory[] }>(
+      BACKEND_URL + "/getoutofstock/" + id
+    );
+  }
   getInventory() {
     const id = localStorage.getItem("userId");
     this.http
@@ -40,14 +52,13 @@ export class InventoryService {
     };
 
     this.http
-      .post<{ message: string; result: any }>(
+      .post<{ message: string; result: Inventory[] }>(
         BACKEND_URL + "/additem",
         userdata
       )
       .subscribe(
         (res) => {
-          console.log(res.result);
-          this.inventory.push(data);
+          this.inventory = res.result;
           this.InventoryUpdated.next([...this.inventory]);
         },
         (error) => {

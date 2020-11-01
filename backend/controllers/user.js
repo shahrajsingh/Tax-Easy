@@ -40,7 +40,6 @@ exports.userLogin = (req, res, next) => {
   User.findOne({ Email: req.body.email })
     .then((user) => {
       if (!user) {
-        console.log();
         return res.status(401).json({
           message: "Auth failed",
         });
@@ -116,12 +115,13 @@ exports.addItem = (req, res, next) => {
       const item = result;
       User.findByIdAndUpdate(
         { _id: req.body.id },
-        { $push: { Inventory: item } }
+        { $push: { Inventory: item } },
+        { new: true }
       )
         .then((result) => {
           res.status(201).json({
             message: "Item Added Successfully",
-            result: result,
+            result: result.Inventory,
           });
         })
         .catch((error) => {
@@ -144,7 +144,6 @@ exports.getInventory = (req, res, next) => {
   const id = req.params.id;
   User.findById({ _id: id })
     .then((result) => {
-      console.log(result.Inventory);
       if (result) {
         res.status(200).json({
           message: "data found",
@@ -156,6 +155,53 @@ exports.getInventory = (req, res, next) => {
           result: "no data",
         });
       }
+    })
+    .catch((err) => {
+      res.status(500).json({
+        message: "error has occured",
+        result: err,
+      });
+    });
+};
+
+exports.getlowStock = (req, res, next) => {
+  const id = req.params.id;
+  User.findById({ _id: id })
+    .then((result) => {
+      const alertQty = result.AlertQty;
+      let arr = [];
+      for (let i = 0; i < result.Inventory.length; i++) {
+        if (result.Inventory[i].Qty < alertQty) {
+          arr.push(result.Inventory[i]);
+        }
+      }
+      res.status(200).json({
+        message: "data found",
+        result: arr,
+      });
+    })
+    .catch((err) => {
+      res.status(500).json({
+        message: "error has occured",
+        result: err,
+      });
+    });
+};
+
+exports.getoutofStock = (req, res, next) => {
+  const id = req.params.id;
+  User.findById({ _id: id })
+    .then((result) => {
+      let arr = [];
+      for (let i = 0; i < result.Inventory.length; i++) {
+        if (result.Inventory[i].Qty <= 0) {
+          arr.push(result.Inventory[i]);
+        }
+      }
+      res.status(200).json({
+        message: "data found",
+        result: arr,
+      });
     })
     .catch((err) => {
       res.status(500).json({

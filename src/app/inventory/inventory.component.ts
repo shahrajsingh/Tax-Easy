@@ -9,6 +9,7 @@ import { InventoryService } from "./inventory.service";
   styleUrls: ["./inventory.component.scss"],
 })
 export class InventoryComponent implements OnInit {
+  isloading: boolean = true;
   seeLowStock: boolean = false;
   seeOutofStock: boolean = false;
   addItem: boolean = false;
@@ -27,6 +28,15 @@ export class InventoryComponent implements OnInit {
         this.inventory = res;
       });
     this.inventoryService.getInventory();
+    this.inventoryService.getLowStock().subscribe((res) => {
+      this.lowStock = res.result;
+      this.lowStockCout = this.lowStock.length;
+    });
+    this.inventoryService.getOutofStock().subscribe((res) => {
+      this.outOfStock = res.result;
+      this.outOfStockCount = this.outOfStock.length;
+      this.isloading = false;
+    });
   }
   sLS() {
     this.seeOutofStock = false;

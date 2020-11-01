@@ -15,4 +15,6 @@ router.post("/additem", checkAuth, UserController.addItem);
 
 router.get("/getInventory/:id", checkAuth, UserController.getInventory);
 
+router.get("/getlowstock/:id", checkAuth, UserController.getlowStock);
+router.get("/getoutofstock/:id", checkAuth, UserController.getoutofStock);
 module.exports = router;

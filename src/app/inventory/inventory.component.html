@@ -5,8 +5,9 @@
     </button>
     <button
       class="idb"
+      [disabled]="lowStockCout == 0"
       mat-raised-button
-      matBadge="8"
+      matBadge="{{ lowStockCout }}"
       color="accent"
       (click)="sLS()"
     >
@@ -16,9 +17,10 @@
     <button
       (click)="sOS()"
       class="idb"
+      [disabled]="outOfStockCount == 0"
       mat-raised-button
       color="warn"
-      matBadge="8"
+      matBadge="{{ outOfStockCount }}"
       matBadgeColor="primary"
     >
       <mat-icon>warning</mat-icon>
@@ -48,7 +50,11 @@
     ></app-inventory-list>
   </div>
   <mat-divider *ngIf="addItem || seeLowStock || seeOutofStock"></mat-divider>
-  <div class="inventory-list">
+  <mat-spinner
+    *ngIf="isloading"
+    style="margin: 5rem auto auto auto"
+  ></mat-spinner>
+  <div class="inventory-list" *ngIf="!isloading">
     <h1>My Inventory</h1>
     <h4 style="text-align: center" *ngIf="inventory.length <= 0">
       Looks like you have not added any items to inventory !
