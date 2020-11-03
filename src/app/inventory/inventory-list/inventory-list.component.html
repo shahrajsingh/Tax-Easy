@@ -1,5 +1,6 @@
 <div class="inventory-container">
-  <table class="table">
+  <mat-spinner *ngIf="isLoading"></mat-spinner>
+  <table class="table" *ngIf="!isLoading">
     <tr class="tr trth">
       <th class="th">No.</th>
       <th class="th">Item Name</th>
@@ -7,7 +8,7 @@
       <th class="th">Tax%</th>
       <th class="th">Rate</th>
     </tr>
-    <tr class="tr" *ngFor="let i of inventory; let j = index">
+    <tr class="tr" *ngFor="let i of Inventory; let j = index">
       <td class="td">{{ j + 1 }}</td>
       <td class="td">{{ i.ItemName }}</td>
       <td class="td">{{ i.Qty }}</td>
@@ -17,9 +18,10 @@
     <tr>
       <td colspan="5" style="padding: 0px">
         <mat-paginator
-          [length]="100"
-          [pageSize]="10"
-          [pageSizeOptions]="[5, 10, 25, 100]"
+          [length]="totalItems"
+          [pageSize]="itemsPerPage"
+          [pageSizeOptions]="pageSizeOptions"
+          (page)="onChangedPage($event)"
         >
         </mat-paginator>
       </td>

@@ -2,6 +2,7 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Subject } from "rxjs";
 import { environment } from "src/environments/environment";
+import { InventoryListComponent } from "./inventory-list/inventory-list.component";
 import { Inventory } from "./inventory.model";
 
 const BACKEND_URL = environment.apiUrl + "/users";
@@ -11,6 +12,10 @@ const BACKEND_URL = environment.apiUrl + "/users";
 export class InventoryService {
   inventory: Inventory[] = [];
   InventoryUpdated = new Subject();
+  InventoryListUpdated = new Subject<boolean>();
+  InventoryListUpdatedListener() {
+    return this.InventoryListUpdated.asObservable();
+  }
   getLowStock() {
     const id = localStorage.getItem("userId");
 
@@ -60,6 +65,7 @@ export class InventoryService {
         (res) => {
           this.inventory = res.result;
           this.InventoryUpdated.next([...this.inventory]);
+          this.InventoryListUpdated.next(true);
         },
         (error) => {
           console.log(error);
