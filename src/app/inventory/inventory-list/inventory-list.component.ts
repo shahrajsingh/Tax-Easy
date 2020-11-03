@@ -14,10 +14,10 @@ export class InventoryListComponent implements OnInit {
   Inventory: Inventory[] = [];
   isLoading: boolean = false;
   totalItems = 0;
-  itemsPerPage = 5;
+  itemsPerPage = 10;
   currentPage = 0;
-  lastIndex = 5;
-  pageSizeOptions = [5, 10, 30, 50];
+
+  pageSizeOptions = [10, 20, 30, 50];
   onChangedPage(pageData: PageEvent) {
     this.Inventory = [];
     this.itemsPerPage = pageData.pageSize;
@@ -36,34 +36,22 @@ export class InventoryListComponent implements OnInit {
     }
   }
   updateInventory() {
-    console.log(this.inventory);
     this.totalItems = this.inventory.length;
     if (this.Inventory.length >= this.itemsPerPage) {
       return;
     } else {
-      console.log("inventory else");
       for (let i = 0; i < this.inventory.length; i++) {
         if (i >= this.itemsPerPage) {
           break;
         } else {
-          console.log("inventory else");
           this.Inventory[i] = this.inventory[i];
         }
       }
     }
   }
-  constructor(private inventoryService: InventoryService) {}
+  constructor() {}
 
   ngOnInit(): void {
     this.updateInventory();
-    this.inventoryService
-      .InventoryListUpdatedListener()
-      .subscribe((res: boolean) => {
-        if (res) {
-          console.log("inventory updated");
-          this.updateInventory();
-          console.log(this.Inventory);
-        }
-      });
   }
 }

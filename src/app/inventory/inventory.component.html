@@ -60,7 +60,7 @@
       Looks like you have not added any items to inventory !
     </h4>
     <app-inventory-list
-      [inventory]="inventory"
+      [(inventory)]="inventory"
       *ngIf="inventory.length > 0"
     ></app-inventory-list>
   </div>

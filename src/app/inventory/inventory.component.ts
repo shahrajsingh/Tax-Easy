@@ -1,4 +1,5 @@
 import { Component, OnInit } from "@angular/core";
+
 import { Subscription } from "rxjs";
 import { Inventory } from "./inventory.model";
 import { InventoryService } from "./inventory.service";
@@ -25,7 +26,10 @@ export class InventoryComponent implements OnInit {
     this.inventoryUpdatedSud = this.inventoryService
       .InventoryUpdateListener()
       .subscribe((res: Inventory[]) => {
+        this.isloading = true;
+
         this.inventory = res;
+        this.isloading = false;
       });
     this.inventoryService.getInventory();
     this.inventoryService.getLowStock().subscribe((res) => {
