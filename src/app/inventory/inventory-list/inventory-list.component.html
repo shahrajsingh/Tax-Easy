@@ -13,7 +13,17 @@
       <td class="td">{{ i.ItemName }}</td>
       <td class="td">{{ i.Qty }}</td>
       <td class="td">{{ i.Hsn }}</td>
-      <td class="td">Rs.{{ i.Rate }}</td>
+      <td class="td">
+        Rs.{{ i.Rate }}
+        <button
+          mat-icon-button
+          (click)="edit(i._id)"
+          class="edit-btn"
+          color="warn"
+        >
+          <mat-icon>edit</mat-icon>
+        </button>
+      </td>
     </tr>
     <tr>
       <td colspan="5" style="padding: 0px">

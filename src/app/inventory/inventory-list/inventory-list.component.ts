@@ -49,7 +49,12 @@ export class InventoryListComponent implements OnInit {
       }
     }
   }
-  constructor() {}
+
+  edit(i) {
+    console.log(i);
+    this.InventoryService.updateInventory(i);
+  }
+  constructor(private InventoryService: InventoryService) {}
 
   ngOnInit(): void {
     this.updateInventory();

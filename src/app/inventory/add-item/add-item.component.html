@@ -1,6 +1,6 @@
 <br />
 <div class="add-item-container">
-  <mat-card>
+  <mat-card *ngIf="!isloading">
     <form #itemForm="ngForm" (submit)="additem(itemForm)">
       <mat-form-field appearance="outline">
         <mat-label>Item Name</mat-label>
@@ -10,7 +10,7 @@
           name="itemName"
           maxlength="30"
           minlength="3"
-          ngModel
+          [(ngModel)]="data.ItemName"
           #itemName="ngModel"
           required
         />
@@ -24,7 +24,7 @@
           name="hsn"
           maxlength="30"
           minlength="3"
-          ngModel
+          [(ngModel)]="data.Hsn"
           #hsn="ngModel"
           required
         />
@@ -36,7 +36,7 @@
           type="number"
           matInput
           name="qty"
-          ngModel
+          [(ngModel)]="data.Qty"
           #qty="ngModel"
           required
         />
@@ -48,15 +48,40 @@
           type="number"
           matInput
           name="rate"
-          ngModel
+          [(ngModel)]="data.Rate"
           #rate="ngModel"
           required
         />
         <mat-error *ngIf="rate.invalid">Rate is required</mat-error>
       </mat-form-field>
       <br />
-      <button mat-raised-button color="primary" type="submit">
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        *ngIf="mode === 'create'"
+      >
         <mat-icon>login</mat-icon>&nbsp; Add Item
+      </button>
+      <button
+        mat-raised-button
+        color="accent"
+        type="submit"
+        *ngIf="mode === 'edit'"
+        (click)="additem()"
+      >
+        <mat-icon>upgrade</mat-icon>&nbsp; Update
+      </button>
+
+      <button
+        mat-raised-button
+        style="margin-left: 16px"
+        color="warn"
+        type="button"
+        *ngIf="mode === 'edit'"
+        (click)="delete()"
+      >
+        <mat-icon>delete</mat-icon>&nbsp; Delete
       </button>
     </form>
   </mat-card>

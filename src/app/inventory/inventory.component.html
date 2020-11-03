@@ -28,7 +28,9 @@
     </button>
   </div>
   <mat-divider></mat-divider>
-  <div class="add" *ngIf="addItem"><app-add-item></app-add-item></div>
+  <div class="add" *ngIf="addItem">
+    <app-add-item [(id)]="updateId"></app-add-item>
+  </div>
   <div class="sLS" *ngIf="seeLowStock">
     <h1>Low on Stock</h1>
     <h4 style="text-align: center" *ngIf="lowStock.length <= 0">

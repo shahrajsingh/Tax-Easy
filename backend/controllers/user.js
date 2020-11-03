@@ -2,6 +2,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 const Inventory = require("../models/inventory");
+const user = require("../models/user");
 
 const User = require("../models/user");
 
@@ -104,7 +105,7 @@ exports.getUser = (req, res, next) => {
 exports.addItem = (req, res, next) => {
   const item = new Inventory({
     ItemName: req.body.ItemName,
-    HSN: req.body.Hsn,
+    Hsn: req.body.Hsn,
     Qty: req.body.Qty,
     Rate: req.body.Rate,
   });
@@ -206,6 +207,58 @@ exports.getoutofStock = (req, res, next) => {
     .catch((err) => {
       res.status(500).json({
         message: "error has occured",
+        result: err,
+      });
+    });
+};
+
+exports.getInventoryItem = (req, res, next) => {
+  const id = req.params.id;
+  Inventory.findById({ _id: id })
+    .then((result) => {
+      if (result) {
+        res.status(200).json({
+          message: "data found",
+          result: result,
+        });
+      } else {
+        res.status(401).json({
+          message: "data not found",
+          result: "data not located",
+        });
+      }
+    })
+    .catch((err) => {
+      res.status(500).json({
+        message: "an error has occured",
+        result: err,
+      });
+    });
+};
+
+exports.updateItem = (req, res, next) => {
+  const userId = req.params.id;
+  Inventory.findByIdAndUpdate(
+    { _id: req.body._id },
+    {
+      itemName: req.body.itemName,
+      Qty: req.body.Qty,
+      Rate: req.body.Rate,
+      Hsn: req.body.Hsn,
+    }
+  )
+    .then((result) => {
+      console.log("updated", result);
+      //User.findOneAndUpdate({});
+      /*continue from here*/
+      res.status(201).json({
+        message: "update Successfull",
+        result: result,
+      });
+    })
+    .catch((err) => {
+      res.status(500).json({
+        message: "error occured",
         result: err,
       });
     });

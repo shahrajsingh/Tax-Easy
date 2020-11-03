@@ -16,5 +16,10 @@ router.post("/additem", checkAuth, UserController.addItem);
 router.get("/getInventory/:id", checkAuth, UserController.getInventory);
 
 router.get("/getlowstock/:id", checkAuth, UserController.getlowStock);
+
 router.get("/getoutofstock/:id", checkAuth, UserController.getoutofStock);
+
+router.get("/getinventoryitem/:id", checkAuth, UserController.getInventoryItem);
+
+router.put("/updateitem/:id", checkAuth, UserController.updateItem);
 module.exports = router;

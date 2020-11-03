@@ -41,6 +41,7 @@ td {
   padding: 1rem 0.5rem 1rem 0.5rem;
   font-size: 14px;
   font-weight: 500;
+  position: relative;
   border-left: 1px solid white;
 }
 td:nth-child(1) {
@@ -52,6 +53,16 @@ td:nth-child(4) {
 }
 mat-paginator {
   width: 100%;
+}
+.edit-btn {
+  position: absolute;
+  z-index: -1;
+  right: 0;
+  margin: -12px 0px 0px 8px;
+  transition: all 0.2s;
+}
+tr:hover .edit-btn {
+  z-index: 0;
 }
 @media screen and (max-width: 600px) {
   .table {
