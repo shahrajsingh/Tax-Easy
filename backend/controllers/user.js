@@ -241,24 +241,64 @@ exports.updateItem = (req, res, next) => {
   Inventory.findByIdAndUpdate(
     { _id: req.body._id },
     {
-      itemName: req.body.itemName,
+      ItemName: req.body.ItemName,
       Qty: req.body.Qty,
       Rate: req.body.Rate,
       Hsn: req.body.Hsn,
     }
   )
     .then((result) => {
-      console.log("updated", result);
-      //User.findOneAndUpdate({});
-      /*continue from here*/
-      res.status(201).json({
-        message: "update Successfull",
-        result: result,
-      });
+      User.findOneAndUpdate(
+        { _id: userId, "Inventory._id": req.body._id },
+        {
+          $set: {
+            "Inventory.$.ItemName": req.body.ItemName,
+            "Inventory.$.Qty": req.body.Qty,
+            "Inventory.$.Hsn": req.body.Hsn,
+            "Inventory.$.Rate": req.body.Rate,
+          },
+        }
+      )
+        .then((result) => {
+          res.status(201).json({
+            message: "update Successfull",
+            result: result,
+          });
+        })
+        .catch((err) => {
+          res.status(201).json({
+            message: "error occurred",
+            result: err,
+          });
+        });
     })
     .catch((err) => {
       res.status(500).json({
         message: "error occured",
+        result: err,
+      });
+    });
+};
+
+exports.deleteItem = (req, res, next) => {
+  const userId = req.body.userId;
+
+  const id = req.body.itemid;
+
+  User.findByIdAndUpdate(
+    { _id: userId },
+    { $pull: { Inventory: { _id: id } } },
+    { safe: true, upsert: true }
+  )
+    .then((result) => {
+      res.status(201).json({
+        message: "item deleted",
+        result: result.Inventory,
+      });
+    })
+    .catch((err) => {
+      res.status(500).json({
+        message: "delete error",
         result: err,
       });
     });

@@ -1,5 +1,4 @@
 import { Component, Input, OnInit } from "@angular/core";
-import { NgForm } from "@angular/forms";
 import { Router } from "@angular/router";
 import { Inventory } from "../inventory.model";
 import { InventoryService } from "../inventory.service";
@@ -26,10 +25,8 @@ export class AddItemComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    console.log("add", this.id);
     if (this.id == null || this.id == undefined) {
       this.mode = "create";
-      console.log(this.mode);
     } else if (this.id) {
       this.mode = "edit";
       this.isloading = true;
@@ -39,7 +36,7 @@ export class AddItemComponent implements OnInit {
       });
     }
   }
-  additem(form: NgForm) {
+  additem() {
     if (this.mode === "edit") {
       const data: Inventory = {
         _id: this.id,
@@ -60,5 +57,7 @@ export class AddItemComponent implements OnInit {
       this.inventoryService.addToInventory(data);
     }
   }
-  delete() {}
+  delete(id: string) {
+    this.inventoryService.deleteitem(id);
+  }
 }

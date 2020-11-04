@@ -1,7 +1,7 @@
 <br />
 <div class="add-item-container">
   <mat-card *ngIf="!isloading">
-    <form #itemForm="ngForm" (submit)="additem(itemForm)">
+    <form #itemForm="ngForm" (submit)="additem()">
       <mat-form-field appearance="outline">
         <mat-label>Item Name</mat-label>
         <input
@@ -79,7 +79,7 @@
         color="warn"
         type="button"
         *ngIf="mode === 'edit'"
-        (click)="delete()"
+        (click)="delete(id)"
       >
         <mat-icon>delete</mat-icon>&nbsp; Delete
       </button>

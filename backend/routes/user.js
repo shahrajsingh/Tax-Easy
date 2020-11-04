@@ -22,4 +22,6 @@ router.get("/getoutofstock/:id", checkAuth, UserController.getoutofStock);
 router.get("/getinventoryitem/:id", checkAuth, UserController.getInventoryItem);
 
 router.put("/updateitem/:id", checkAuth, UserController.updateItem);
+
+router.put("/deleteitem", checkAuth, UserController.deleteItem);
 module.exports = router;

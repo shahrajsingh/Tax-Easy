@@ -14,6 +14,32 @@ export class InventoryService {
   inventory: Inventory[] = [];
   InventoryUpdated = new Subject();
   InventoryUpdateRequest = new Subject<{ bool: boolean; id: string }>();
+  deleteitem(id: string) {
+    const data = { userId: localStorage.getItem("userId"), itemid: id };
+
+    this.http
+      .put<{ message: string; result: Inventory[] }>(
+        BACKEND_URL + "/deleteitem",
+        data
+      )
+      .subscribe(
+        (res) => {
+          if (res.message === "item deleted") {
+            this.inventory = res.result;
+            this.InventoryUpdated.next([...this.inventory]);
+            this.router
+              .navigateByUrl("/", { skipLocationChange: true })
+              .then(() => {
+                this.router.navigate(["/inventory"]);
+              });
+          } else {
+          }
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+  }
   InventoryUpdateRequestListener() {
     return this.InventoryUpdateRequest.asObservable();
   }
@@ -98,6 +124,5 @@ export class InventoryService {
   InventoryUpdateListener() {
     return this.InventoryUpdated.asObservable();
   }
-
   constructor(private http: HttpClient, private router: Router) {}
 }
