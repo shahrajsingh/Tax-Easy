@@ -17,7 +17,7 @@
       />
       <mat-error *ngIf="item.invalid"> Id is required </mat-error>
     </mat-form-field>
-    &nbsp;&nbsp;
+
     <mat-form-field appearance="outline">
       <mat-label>Quantity</mat-label>
       <input
@@ -32,11 +32,30 @@
       />
       <mat-error *ngIf="qty.invalid"> Qunatity is requierd </mat-error>
     </mat-form-field>
-    &nbsp;&nbsp;
+
+    <mat-form-field appearance="outline">
+      <mat-label>Issued to</mat-label>
+      <input
+        matInput
+        name="issuedto"
+        required
+        minlength="3"
+        maxlength="30"
+        ngModel
+        #issuedto="ngModel"
+        type="text"
+        placeholder="e.g:- john doe"
+      />
+      <mat-error *ngIf="issuedto.invalid">Required Field</mat-error>
+    </mat-form-field>
     <div>
       <button mat-raised-button class="btn" color="accent" type="submit">
         <mat-icon>add</mat-icon>Add
       </button>
     </div>
   </form>
+  <button mat-raised-button class="save-btn" color="primary">
+    <mat-icon>request_quote</mat-icon>
+    Issue Invoice
+  </button>
 </div>

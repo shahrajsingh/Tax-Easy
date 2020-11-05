@@ -15,7 +15,11 @@ export class MakeBillComponent implements OnInit {
     if (form.invalid) {
       return;
     } else {
-      this.billService.getDetails(form.value.item, form.value.qty);
+      this.billService.getDetails(
+        form.value.item,
+        form.value.qty,
+        form.value.issuedto
+      );
     }
   }
 }

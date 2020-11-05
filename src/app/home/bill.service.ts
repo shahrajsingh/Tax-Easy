@@ -13,7 +13,7 @@ export class BillService {
   billupdated() {
     return this.billUpdateListener.asObservable();
   }
-  getDetails(id: string, qty: number) {
+  getDetails(id: string, qty: number, issuedto: string) {
     const taxpercent: number = parseFloat((5).toFixed(2));
     const rate: number = parseFloat((123).toFixed(2));
     const tax: number = parseFloat(((5 / 100) * rate * qty).toFixed(2));
