@@ -28,8 +28,8 @@ export class BillComponent implements OnInit, OnDestroy {
     this.d.getSeconds() +
     ":" +
     this.d.getSeconds();
-  total: number;
-  items: Bill[] = [];
+  Total: number;
+  Items: Bill[] = [];
   billupdatesub: Subscription;
   constructor(
     private billService: BillService,
@@ -37,15 +37,13 @@ export class BillComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.billupdatesub = this.billService
-      .billupdated()
-      .subscribe((billData: { bill: Bill[]; Total: number }) => {
-        this.items = billData.bill;
-        this.total = billData.Total;
-      });
     this.authService.getUserData().subscribe((res) => {
       (this.Address = res.result.address),
         (this.CompanyName = res.result.companyName);
+    });
+    this.billupdatesub = this.billService.billupdated().subscribe((res) => {
+      this.Items = res.bill;
+      this.Total = res.Total;
     });
   }
   delete(x) {

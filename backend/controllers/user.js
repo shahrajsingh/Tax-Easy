@@ -303,3 +303,19 @@ exports.deleteItem = (req, res, next) => {
       });
     });
 };
+
+exports.issueInvoice = (req, res, next) => {
+  User.findByIdAndUpdate({ _id: req.params.id }, { $push: { Bills: req.body } })
+    .then((result) => {
+      res.status(201).json({
+        message: "update successfull",
+        result: "success",
+      });
+    })
+    .catch((err) => {
+      res.status(500).json({
+        message: "server error",
+        result: err,
+      });
+    });
+};

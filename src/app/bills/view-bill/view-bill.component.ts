@@ -17,7 +17,7 @@ export class ViewBillComponent implements OnInit {
       ItemName: "adsf",
       Qty: 3,
       Tax: 123,
-      Taxpercent: "5",
+      TaxPercent: 5,
       Rate: 12312,
       Amt: 121,
     },

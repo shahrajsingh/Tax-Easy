@@ -24,4 +24,5 @@ router.get("/getinventoryitem/:id", checkAuth, UserController.getInventoryItem);
 router.put("/updateitem/:id", checkAuth, UserController.updateItem);
 
 router.put("/deleteitem", checkAuth, UserController.deleteItem);
+router.post("/issueinvoice/:id", checkAuth, UserController.issueInvoice);
 module.exports = router;

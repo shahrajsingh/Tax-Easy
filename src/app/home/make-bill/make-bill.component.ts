@@ -22,4 +22,7 @@ export class MakeBillComponent implements OnInit {
       );
     }
   }
+  issueInvoice() {
+    this.billService.IssueInvoice();
+  }
 }

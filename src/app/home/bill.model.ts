@@ -2,7 +2,7 @@ export interface Bill {
   ItemName: string;
   Qty: number;
   Rate: number;
-  Taxpercent: string;
+  TaxPercent: number;
   Tax: number;
   Amt: number;
 }

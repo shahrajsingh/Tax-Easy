@@ -54,7 +54,12 @@
       </button>
     </div>
   </form>
-  <button mat-raised-button class="save-btn" color="primary">
+  <button
+    mat-raised-button
+    class="save-btn"
+    color="primary"
+    (click)="issueInvoice()"
+  >
     <mat-icon>request_quote</mat-icon>
     Issue Invoice
   </button>

@@ -21,11 +21,11 @@
       <th>Tax</th>
       <th>Amt</th>
     </tr>
-    <tr *ngFor="let i of items; let j = index">
+    <tr *ngFor="let i of Items; let j = index">
       <td style="text-align: center">{{ i.ItemName }}</td>
       <td>{{ i.Qty }}</td>
       <td>{{ i.Rate }}</td>
-      <td>{{ i.Taxpercent }}</td>
+      <td>{{ i.TaxPercent }}</td>
       <td>{{ i.Tax }}</td>
       <td style="text-align: right">{{ i.Amt }}</td>
       <td class="cancel" (click)="delete(j)">
@@ -33,8 +33,8 @@
       </td>
     </tr>
   </table>
-  <div class="total" *ngIf="total != null || total != undefined">
-    <h2>Total Amount: Rs {{ total }}</h2>
+  <div class="total" *ngIf="Total != null || Total != undefined">
+    <h2>Total Amount: Rs {{ Total }}</h2>
   </div>
   <br />
   <mat-divider></mat-divider>
