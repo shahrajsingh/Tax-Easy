@@ -3,6 +3,8 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 
 const userRoutes = require("./Routes/user");
+const inventoryRoutes = require("./routes/inventory");
+const billRoutes = require("./routes/bill");
 const app = express();
 
 mongoose
@@ -48,5 +50,6 @@ app.get("", (req, res, next) => {
   res.status(201).send("Server is up and running :)");
 });
 app.use("/api/users", userRoutes);
-
+app.use("/api/inventory", inventoryRoutes);
+app.use("/api/bill", billRoutes);
 module.exports = app;

@@ -9,8 +9,12 @@ import { BillService } from "../bill.service";
 })
 export class MakeBillComponent implements OnInit {
   constructor(private billService: BillService) {}
-
-  ngOnInit(): void {}
+  options: string[] = [];
+  ngOnInit(): void {
+    this.billService.getProductNames().subscribe((res) => {
+      this.options = res.result;
+    });
+  }
   addItem(form: NgForm) {
     if (form.invalid) {
       return;

@@ -8,10 +8,10 @@
       <th>Issued To</th>
       <th>Issue Date</th>
     </tr>
-    <tr *ngFor="let i of bills" (click)="viewBill(i._id)">
-      <td>{{ i._id }}</td>
-      <td>{{ i.issuedTo }}</td>
-      <td>{{ i.Date }}</td>
+    <tr *ngFor="let i of bills; let j = index" (click)="viewBill(j)">
+      <td>{{ j }}</td>
+      <td>{{ i.IssuedTo }}</td>
+      <td>{{ i.IssueDate }}</td>
     </tr>
   </table>
 </div>

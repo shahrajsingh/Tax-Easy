@@ -17,7 +17,7 @@
         <mat-error *ngIf="itemName.invalid">Item Name is required</mat-error>
       </mat-form-field>
       <mat-form-field appearance="outline">
-        <mat-label>HSN Code</mat-label>
+        <mat-label>Tax Percent</mat-label>
         <input
           type="number"
           matInput
@@ -28,7 +28,7 @@
           #hsn="ngModel"
           required
         />
-        <mat-error *ngIf="hsn.invalid">HSN is required</mat-error>
+        <mat-error *ngIf="hsn.invalid">Tax Percent is required</mat-error>
       </mat-form-field>
       <mat-form-field appearance="outline">
         <mat-label>Item Quantity</mat-label>

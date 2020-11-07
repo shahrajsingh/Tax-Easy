@@ -9,7 +9,7 @@ const Inventory = mongoose.Schema({
 });
 const items = mongoose.Schema({
   _id: { type: String },
-  ItemName: { type: String, required: true },
+  ItemName: { type: String, required: true, unique: true },
   Qty: { type: Number, required: true },
   Rate: { type: Number, required: true },
   Discount: { type: Number, required: false },

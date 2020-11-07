@@ -1,5 +1,5 @@
 export interface Bills {
   _id: string;
-  Date: string;
-  issuedTo: string;
+  IssueDate: string;
+  IssuedTo: string;
 }

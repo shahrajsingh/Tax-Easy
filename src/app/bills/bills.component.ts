@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
+import { BillService } from "../home/bill.service";
 
 import { Bills } from "./bills.model";
 
@@ -9,32 +10,15 @@ import { Bills } from "./bills.model";
   styleUrls: ["./bills.component.scss"],
 })
 export class BillsComponent implements OnInit {
-  bills: Bills[] = [
-    {
-      _id: "1234",
-      issuedTo: "mefasdfsdafisdfhsdufhsdhfkjsdhfihsdjfhjdfgjdsakjfgjsdgfj",
-      Date: "12344",
-    },
-    {
-      _id: "1234",
-      issuedTo: "me",
-      Date: "12344",
-    },
-    {
-      _id: "1234",
-      issuedTo: "me",
-      Date: "12344",
-    },
-    {
-      _id: "1234",
-      issuedTo: "me",
-      Date: "12344",
-    },
-  ];
-  constructor(private router: Router) {}
+  bills: Bills[] = [];
+  constructor(private router: Router, private billService: BillService) {}
 
-  ngOnInit(): void {}
-  viewBill(id: string) {
+  ngOnInit(): void {
+    this.billService.getBills().subscribe((res) => {
+      this.bills = res.result;
+    });
+  }
+  viewBill(id) {
     const url = this.router.serializeUrl(
       this.router.createUrlTree(["/viewBill", id])
     );

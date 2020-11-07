@@ -6,7 +6,7 @@ import { environment } from "src/environments/environment";
 
 import { Inventory } from "./inventory.model";
 
-const BACKEND_URL = environment.apiUrl + "/users";
+const BACKEND_URL = environment.apiUrl + "/inventory";
 @Injectable({
   providedIn: "root",
 })
@@ -56,7 +56,11 @@ export class InventoryService {
     this.http
       .put<{ message: string; result }>(BACKEND_URL + "/updateitem/" + id, data)
       .subscribe((res) => {
-        console.log(res.result);
+        this.router
+          .navigateByUrl("/", { skipLocationChange: true })
+          .then(() => {
+            this.router.navigate(["/inventory"]);
+          });
       });
   }
   getLowStock() {

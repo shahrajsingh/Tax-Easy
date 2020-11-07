@@ -4,6 +4,7 @@ import { ActivatedRoute, ParamMap } from "@angular/router";
 
 import { AuthService } from "src/app/auth/auth.service";
 import { Bill } from "src/app/home/bill.model";
+import { BillService } from "src/app/home/bill.service";
 const BackendUrl = "http://localhost:3000/api";
 @Component({
   selector: "app-view-bill",
@@ -12,16 +13,7 @@ const BackendUrl = "http://localhost:3000/api";
 })
 export class ViewBillComponent implements OnInit {
   data = { userId: null, billid: null };
-  bill: Bill[] = [
-    {
-      ItemName: "adsf",
-      Qty: 3,
-      Tax: 123,
-      TaxPercent: 5,
-      Rate: 12312,
-      Amt: 121,
-    },
-  ];
+  bill: Bill[] = [];
   d = new Date();
   CompanyName: string;
   Date: string;
@@ -30,17 +22,17 @@ export class ViewBillComponent implements OnInit {
   InvoiceNumber: string;
   isLoading: boolean = false;
   constructor(
-    private authService: AuthService,
     private route: ActivatedRoute,
-    private http: HttpClient
+    private billService: BillService
   ) {}
 
   ngOnInit(): void {
-    this.data.userId = this.authService.getUserId();
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
       if (paramMap.has("id")) {
-        this.data.userId = paramMap.get("id");
-        this.http.get<{}>(BackendUrl + this.data).subscribe((res) => {});
+        this.data.billid = paramMap.get("id");
+        this.billService.getBill(this.data.billid).subscribe((res) => {
+          console.log(res);
+        });
       }
     });
   }
