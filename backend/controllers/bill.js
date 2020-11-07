@@ -60,16 +60,13 @@ exports.issueInvoice = (req, res, next) => {
               });
             })
             .catch((err) => {
+              console.log(err);
               res.status(500).json({ message: "error has occurred at 61" });
             });
         })
         .catch((err) => {
           res.status(500).json({ message: "error has occurred at 64" });
         });
-      res.status(201).json({
-        message: "update successfull",
-        result: "success",
-      });
     })
     .catch((err) => {
       res.status(500).json({
@@ -78,6 +75,7 @@ exports.issueInvoice = (req, res, next) => {
       });
     });
 };
+
 exports.getItemNames = (req, res, next) => {
   User.findById({ _id: req.params.id })
     .then((result) => {
