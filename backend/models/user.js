@@ -3,7 +3,8 @@ const uniqueValidator = require("mongoose-unique-validator");
 const Inventory = mongoose.Schema({
   _id: { type: String, required: true },
   ItemName: { type: String, required: true },
-  Hsn: { type: Number, required: true },
+  TaxPercent: { type: String, required: true },
+  Hsn: { type: Number },
   Qty: { type: Number, required: true },
   Rate: { type: Number, required: true },
 });

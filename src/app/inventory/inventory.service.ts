@@ -98,6 +98,7 @@ export class InventoryService {
     const userdata = {
       id: userId,
       ItemName: data.ItemName,
+      TaxPercent: data.TaxPercent,
       Hsn: data.Hsn,
       Qty: data.Qty,
       Rate: data.Rate,
@@ -112,7 +113,7 @@ export class InventoryService {
         (res) => {
           console.log(this.inventory);
           this.inventory = res.result;
-          console.log(res, this.inventory);
+
           this.InventoryUpdated.next([...this.inventory]);
           this.router
             .navigateByUrl("/", { skipLocationChange: true })

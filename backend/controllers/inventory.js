@@ -4,6 +4,7 @@ const User = require("../models/user");
 exports.addItem = (req, res, next) => {
   const item = new Inventory({
     ItemName: req.body.ItemName,
+    TaxPercent: req.body.TaxPercent,
     Hsn: req.body.Hsn,
     Qty: req.body.Qty,
     Rate: req.body.Rate,
@@ -141,6 +142,7 @@ exports.updateItem = (req, res, next) => {
     { _id: req.body._id },
     {
       ItemName: req.body.ItemName,
+      TaxPercent: req.body.TaxPercent,
       Qty: req.body.Qty,
       Rate: req.body.Rate,
       Hsn: req.body.Hsn,
@@ -152,6 +154,7 @@ exports.updateItem = (req, res, next) => {
         {
           $set: {
             "Inventory.$.ItemName": req.body.ItemName,
+            "Inventory.$.TaxPercent": req.body.TaxPercent,
             "Inventory.$.Qty": req.body.Qty,
             "Inventory.$.Hsn": req.body.Hsn,
             "Inventory.$.Rate": req.body.Rate,
@@ -204,10 +207,33 @@ exports.deleteItem = (req, res, next) => {
 };
 
 exports.getItemDetails = (req, res, next) => {
-  if (req.query) {
-    console.log(req.query);
-    res.status(200).json();
-  } else {
-    res.status(500).json("error");
-  }
+  let data;
+  User.findOne({
+    _id: req.query.userid,
+  })
+    .then((result) => {
+      if (result) {
+        for (let i = 0; i < result.Inventory.length; i++) {
+          if (result.Inventory[i].ItemName === req.query.itemname) {
+            data = result.Inventory[i];
+            break;
+          }
+        }
+
+        res.status(200).json({
+          message: "item found",
+          result: data,
+        });
+      } else {
+        res.status(500).json({
+          message: "no data",
+          result: result,
+        });
+      }
+    })
+    .catch((err) => {
+      res.status(500).json({
+        result: err,
+      });
+    });
 };

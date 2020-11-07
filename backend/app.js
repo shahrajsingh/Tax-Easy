@@ -7,6 +7,21 @@ const inventoryRoutes = require("./routes/inventory");
 const billRoutes = require("./routes/bill");
 const app = express();
 
+console.log("connecting");
+let connect = false;
+let connectedIn = 0;
+
+setTimeout(connected, 500);
+function connected() {
+  if (connect) {
+    return;
+  } else {
+    connectedIn += 500;
+    console.log(".");
+    setTimeout(connected, 500);
+  }
+}
+
 mongoose
 
   .connect(
@@ -24,7 +39,8 @@ mongoose
     }
   )
   .then(() => {
-    console.log("Connected to database!");
+    connect = true;
+    console.log("Connection Successful.(Connected in:-", connectedIn, "ms)");
   })
   .catch((error) => {
     console.log("Connection failed!");

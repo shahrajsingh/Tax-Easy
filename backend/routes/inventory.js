@@ -4,6 +4,8 @@ const checkAuth = require("../middleware/check-auth");
 const InventoryController = require("../controllers/inventory");
 const router = express.Router();
 
+router.get("", checkAuth, InventoryController.getItemDetails);
+
 router.post("/additem", checkAuth, InventoryController.addItem);
 
 router.get("/getInventory/:id", checkAuth, InventoryController.getInventory);

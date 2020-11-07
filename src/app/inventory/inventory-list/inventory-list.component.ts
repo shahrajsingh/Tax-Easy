@@ -51,7 +51,6 @@ export class InventoryListComponent implements OnInit {
   }
 
   edit(i) {
-    console.log(i);
     this.InventoryService.updateInventory(i);
   }
   constructor(private InventoryService: InventoryService) {}

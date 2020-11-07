@@ -1,8 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, ParamMap } from "@angular/router";
-
-import { AuthService } from "src/app/auth/auth.service";
 import { Bill } from "src/app/home/bill.model";
 import { BillService } from "src/app/home/bill.service";
 const BackendUrl = "http://localhost:3000/api";
@@ -21,6 +19,7 @@ export class ViewBillComponent implements OnInit {
   total: number;
   InvoiceNumber: string;
   isLoading: boolean = false;
+  IssuedTo: string;
   constructor(
     private route: ActivatedRoute,
     private billService: BillService
@@ -31,7 +30,13 @@ export class ViewBillComponent implements OnInit {
       if (paramMap.has("id")) {
         this.data.billid = paramMap.get("id");
         this.billService.getBill(this.data.billid).subscribe((res) => {
-          console.log(res);
+
+          this.Address = res.Address;
+          this.CompanyName = res.CompanyName;
+          this.Date = res.result.IssueDate;
+          this.IssuedTo = res.result.IssuedTo;
+          this.total = res.result.Total;
+          this.bill = res.result.Items;
         });
       }
     });

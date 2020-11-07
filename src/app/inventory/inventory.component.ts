@@ -53,7 +53,7 @@ export class InventoryComponent implements OnInit, OnDestroy {
           this.addItem = false;
           this.ref.detectChanges();
           this.updateId = res.id;
-          console.log(res);
+
           this.updateitem();
         }
       });

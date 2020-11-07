@@ -15,6 +15,7 @@ export class AddItemComponent implements OnInit {
   data: Inventory = {
     _id: null,
     ItemName: null,
+    TaxPercent: null,
     Qty: null,
     Rate: null,
     Hsn: null,
@@ -41,6 +42,7 @@ export class AddItemComponent implements OnInit {
       const data: Inventory = {
         _id: this.id,
         ItemName: this.data.ItemName,
+        TaxPercent: this.data.TaxPercent,
         Qty: this.data.Qty,
         Rate: this.data.Rate,
         Hsn: this.data.Hsn,
@@ -50,6 +52,7 @@ export class AddItemComponent implements OnInit {
       const data: Inventory = {
         _id: null,
         ItemName: this.data.ItemName,
+        TaxPercent: this.data.TaxPercent,
         Qty: this.data.Qty,
         Rate: this.data.Rate,
         Hsn: this.data.Hsn,

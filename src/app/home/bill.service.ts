@@ -15,7 +15,12 @@ export class BillService {
     const queryParams = `?userid=${localStorage.getItem(
       "userId"
     )}&billid=${billId}`;
-    return this.http.get<{}>(BackendUrl + "/getbill" + queryParams);
+    return this.http.get<{
+      message: string;
+      result: any;
+      CompanyName: string;
+      Address: string;
+    }>(BackendUrl + queryParams);
   }
 
   getBills() {
@@ -75,31 +80,37 @@ export class BillService {
     const queryParams = `?userid=${localStorage.getItem(
       "userId"
     )}&itemname=${id}`;
+    const backendUrl = environment.apiUrl + "/inventory";
     this.http
-      .get<{ message: string; result: Inventory }>(BackendUrl + queryParams)
+      .get<{ message: string; result: Inventory }>(backendUrl + queryParams)
       .subscribe((res) => {
-        const taxpercent: number = parseFloat(res.result.Hsn.toFixed(2));
-        const rate: number = parseFloat(res.result.Rate.toFixed(2));
-        const tax: number = parseFloat(
-          ((taxpercent / 100) * rate * qty).toFixed(2)
-        );
-        const amt: number = parseFloat((rate * qty + tax).toFixed(2));
-        this.Total += amt;
-        this.Total = parseFloat(this.Total.toFixed(2));
-        this.IssuedTo = issuedto;
-        const data: Bill = {
-          ItemName: id,
-          Qty: qty,
-          Rate: rate,
-          TaxPercent: taxpercent,
-          Tax: tax,
-          Amt: amt,
-        };
-        this.Items.push(data);
-        this.billUpdateListener.next({
-          bill: [...this.Items],
-          Total: this.Total,
-        });
+        if (res.result.Qty < qty) {
+          alert("Enered Quaantity is not avaliable");
+          return;
+        } else {
+          const taxpercent: number = res.result.TaxPercent;
+          const rate: number = parseFloat(res.result.Rate.toFixed(2));
+          const tax: number = parseFloat(
+            ((taxpercent / 100) * rate * qty).toFixed(2)
+          );
+          const amt: number = parseFloat((rate * qty + tax).toFixed(2));
+          this.Total += amt;
+          this.Total = parseFloat(this.Total.toFixed(2));
+          this.IssuedTo = issuedto;
+          const data: Bill = {
+            ItemName: id,
+            Qty: qty,
+            Rate: rate,
+            TaxPercent: taxpercent,
+            Tax: tax,
+            Amt: amt,
+          };
+          this.Items.push(data);
+          this.billUpdateListener.next({
+            bill: [...this.Items],
+            Total: this.Total,
+          });
+        }
       });
   }
 

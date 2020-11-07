@@ -6,12 +6,14 @@
       <th class="th">Item Name</th>
       <th class="th">Quantity Left</th>
       <th class="th">Tax%</th>
+      <th class="th">Hsn</th>
       <th class="th">Rate</th>
     </tr>
     <tr class="tr" *ngFor="let i of Inventory; let j = index">
       <td class="td">{{ j + 1 }}</td>
       <td class="td">{{ i.ItemName }}</td>
       <td class="td">{{ i.Qty }}</td>
+      <td class="td">{{ i.TaxPercent }}</td>
       <td class="td">{{ i.Hsn }}</td>
       <td class="td">
         Rs.{{ i.Rate }}
