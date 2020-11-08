@@ -11,9 +11,6 @@ const BACKEND_URL = environment.apiUrl + "/inventory";
   providedIn: "root",
 })
 export class InventoryService {
-  inventory: Inventory[] = [];
-  InventoryUpdated = new Subject();
-  InventoryUpdateRequest = new Subject<{ bool: boolean; id: string }>();
   deleteitem(id: string) {
     const data = { userId: localStorage.getItem("userId"), itemid: id };
 
@@ -129,5 +126,8 @@ export class InventoryService {
   InventoryUpdateListener() {
     return this.InventoryUpdated.asObservable();
   }
+  inventory: Inventory[] = [];
+  InventoryUpdated = new Subject();
+  InventoryUpdateRequest = new Subject<{ bool: boolean; id: string }>();
   constructor(private http: HttpClient, private router: Router) {}
 }
