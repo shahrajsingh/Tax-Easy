@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { NgForm } from "@angular/forms";
+import { SnackbarService } from "src/app/snackbar.service";
 
 import { AuthService } from "../auth.service";
 import { UserData } from "../userData.model";
@@ -22,7 +23,7 @@ export class SignupComponent implements OnInit {
     Product_ID_Initial: null,
     AlertQty: null,
   };
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService,private snackBar:SnackbarService) {}
 
   ngOnInit(): void {
     this.isLoading = true;
@@ -56,21 +57,21 @@ export class SignupComponent implements OnInit {
           Email
         )
       ) {
-        alert("enter a valid email");
+        this.snackBar.openSnackbar('Invalid Email Address!');
         return;
       }
       this.signupdata.Email = Email;
       let Password: string = form.value.password;
       if (!/^[a-zA-Z0-9]*$/.test(Password) || Password.length < 8) {
-        alert("enter a valid password");
+        this.snackBar.openSnackbar('Enter a valid Password!');
         return;
       }
       if (Password != form.value.cpassword) {
-        alert("password mismatch!");
+        this.snackBar.openSnackbar('Password MisMatch');
         return;
       }
       this.signupdata.Password = Password;
-
+      this.isLoading = true;
       this.authService.signup(this.signupdata);
     }
   }

@@ -5,6 +5,7 @@ import { AuthData } from "./authData.model";
 import { environment } from "../../environments/environment";
 import { UserData } from "./userData.model";
 import { HttpClient } from "@angular/common/http";
+import { SnackbarService } from "../snackbar.service";
 
 const BACKEND_URL = environment.apiUrl + "/users";
 @Injectable({
@@ -15,9 +16,13 @@ export class AuthService {
   private token: string;
   private tokenTimer: any;
   private userId: string;
-  private Ls:number;
+  private Ls: number;
   private authStatusListener = new Subject<boolean>();
-  constructor(private router: Router, private http: HttpClient) {}
+  constructor(
+    private router: Router,
+    private http: HttpClient,
+    private snackBarService: SnackbarService
+  ) {}
   getToken() {
     return this.token;
   }
@@ -38,9 +43,11 @@ export class AuthService {
       .post<{ Message: string; Result: any }>(BACKEND_URL + "/signup", userData)
       .subscribe(
         (res) => {
+          this.snackBarService.openSnackbar("SignUp Success");
           this.router.navigate(["/login"]);
         },
         (error) => {
+          this.snackBarService.openSnackbar("Signup Failed!");
           this.authStatusListener.next(false);
         }
       );
@@ -48,7 +55,7 @@ export class AuthService {
   login(email: string, password: string) {
     const authData: AuthData = { email: email, password: password };
     this.http
-      .post<{ token: string; expiresIn: number; userId: string,Ls:number }>(
+      .post<{ token: string; expiresIn: number; userId: string; Ls: number }>(
         BACKEND_URL + "/login",
         authData
       )
@@ -57,22 +64,23 @@ export class AuthService {
           const token = response.token;
           this.token = token;
           if (token) {
+            this.snackBarService.openSnackbar("Login Success");
             const expiresInDuration = response.expiresIn;
             this.setAuthTimer(expiresInDuration);
             this.isAuthenticated = true;
             this.userId = response.userId;
-            this.Ls = response.Ls,
-            this.authStatusListener.next(true);
+            (this.Ls = response.Ls), this.authStatusListener.next(true);
             const now = new Date();
             const expirationDate = new Date(
               now.getTime() + expiresInDuration * 1000
             );
             console.log(expirationDate);
-            this.saveAuthData(token, expirationDate, this.userId,this.Ls);
+            this.saveAuthData(token, expirationDate, this.userId, this.Ls);
             this.router.navigate(["/"]);
           }
         },
         (error) => {
+          this.snackBarService.openSnackbar("Invalid Login Details!");
           this.authStatusListener.next(false);
         }
       );
@@ -111,11 +119,16 @@ export class AuthService {
     }, duration * 1000);
   }
 
-  private saveAuthData(token: string, expirationDate: Date, userId: string,Ls: number) {
+  private saveAuthData(
+    token: string,
+    expirationDate: Date,
+    userId: string,
+    Ls: number
+  ) {
     localStorage.setItem("token", token);
     localStorage.setItem("expiration", expirationDate.toISOString());
     localStorage.setItem("userId", userId);
-    localStorage.setItem("Ls",Ls.toString());
+    localStorage.setItem("Ls", Ls.toString());
   }
 
   private clearAuthData() {
@@ -130,7 +143,7 @@ export class AuthService {
     const expirationDate = localStorage.getItem("expiration");
     const userId = localStorage.getItem("userId");
     const Ls = parseInt(localStorage.getItem("Ls"));
-    
+
     if (!token || !expirationDate) {
       return;
     }

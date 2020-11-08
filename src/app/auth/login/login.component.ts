@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { NgForm } from "@angular/forms";
+import { SnackbarService } from "src/app/snackbar.service";
 import { AuthService } from "../auth.service";
 
 @Component({
@@ -9,7 +10,10 @@ import { AuthService } from "../auth.service";
 })
 export class LoginComponent implements OnInit {
   isLoading: Boolean;
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private snackbar: SnackbarService
+  ) {}
 
   ngOnInit(): void {
     this.isLoading = true;
@@ -21,9 +25,10 @@ export class LoginComponent implements OnInit {
     } else {
       const mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
       if (form.value.email.match(mailformat)) {
+        this.isLoading;
         this.authService.login(form.value.email, form.value.password);
       } else {
-        alert("invalid mail");
+        this.snackbar.openSnackbar("Invalid Email Address!");
         form.reset();
         return;
       }

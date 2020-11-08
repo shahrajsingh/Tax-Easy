@@ -35,6 +35,7 @@ exports.userLogin = (req, res, next) => {
   let fetchedUser;
 
   User.findOne({ Email: req.body.email })
+
     .then((user) => {
       if (!user) {
         return res.status(401).json({
@@ -45,11 +46,6 @@ exports.userLogin = (req, res, next) => {
       return bcrypt.compare(req.body.password, user.Password);
     })
     .then((result) => {
-      if (!result) {
-        return res.status(401).json({
-          message: "Auth failed",
-        });
-      }
       const token = jwt.sign(
         { email: fetchedUser.email, userId: fetchedUser._id },
         process.env.JWT_KEY,
@@ -63,6 +59,7 @@ exports.userLogin = (req, res, next) => {
       });
     })
     .catch((err) => {
+      console.log("error at " + err);
       return res.status(401).json({
         message: "Invalid authentication credentials!",
         result: err,

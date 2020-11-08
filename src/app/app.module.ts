@@ -29,6 +29,7 @@ import { MatBadgeModule } from "@angular/material/badge";
 import { MatPaginatorModule } from "@angular/material/paginator";
 import { MatRadioModule } from "@angular/material/radio";
 import { MatAutocompleteModule } from "@angular/material/autocomplete";
+import { MatSnackBarModule } from "@angular/material/snack-bar";
 
 import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
 import { FormsModule } from "@angular/forms";
@@ -79,6 +80,7 @@ import { ViewBillComponent } from "./bills/view-bill/view-bill.component";
     MatPaginatorModule,
     MatStepperModule,
     MatRadioModule,
+    MatSnackBarModule,
     MatAutocompleteModule,
     HttpClientModule,
     FormsModule,

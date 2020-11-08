@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Inventory = mongoose.Schema({
+  UserIdSystem_Id: { type: String },
   ItemName: { type: String, required: true },
   TaxPercent: { type: Number, required: true },
   Hsn: { type: Number },

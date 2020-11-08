@@ -11,13 +11,18 @@ import { InventoryComponent } from "./inventory/inventory.component";
 const routes: Routes = [
   { path: "login", component: LoginComponent },
   { path: "signup", component: SignupComponent },
-  { path: "", component: HomeComponent },
+  { path: "", component: HomeComponent, canActivate: [AuthGuard] },
   {
     path: "inventory",
     component: InventoryComponent,
+    canActivate: [AuthGuard],
   },
-  { path: "bills", component: BillsComponent },
-  { path: "viewBill/:id", component: ViewBillComponent },
+  { path: "bills", component: BillsComponent, canActivate: [AuthGuard] },
+  {
+    path: "viewBill/:id",
+    component: ViewBillComponent,
+    canActivate: [AuthGuard],
+  },
 ];
 
 @NgModule({
