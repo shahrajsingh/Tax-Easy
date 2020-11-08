@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
+import { SnackbarService } from "src/app/snackbar.service";
 import { Inventory } from "../inventory.model";
 import { InventoryService } from "../inventory.service";
 
@@ -14,6 +15,7 @@ export class AddItemComponent implements OnInit {
   mode: string = "create";
   data: Inventory = {
     _id: null,
+    SellerId: null,
     ItemName: null,
     TaxPercent: null,
     Qty: null,
@@ -22,6 +24,7 @@ export class AddItemComponent implements OnInit {
   };
   constructor(
     private inventoryService: InventoryService,
+    private snackbar: SnackbarService,
     private router: Router
   ) {}
 
@@ -38,8 +41,12 @@ export class AddItemComponent implements OnInit {
     }
   }
   additem() {
+    if (this.data.Qty <= 0) {
+      this.snackbar.openSnackbar("Quantity cannot be less than 1");
+      return;
+    }
     if (this.mode === "edit") {
-      const data: Inventory = {
+      const data = {
         _id: this.id,
         ItemName: this.data.ItemName,
         TaxPercent: this.data.TaxPercent,
@@ -49,7 +56,7 @@ export class AddItemComponent implements OnInit {
       };
       this.inventoryService.updateInventoryData(data);
     } else {
-      const data: Inventory = {
+      const data = {
         _id: null,
         ItemName: this.data.ItemName,
         TaxPercent: this.data.TaxPercent,

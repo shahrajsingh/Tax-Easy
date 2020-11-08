@@ -20,7 +20,7 @@ router.get(
   InventoryController.getInventoryItem
 );
 
-router.put("/updateitem/:id", checkAuth, InventoryController.updateItem);
+router.put("/updateitem", checkAuth, InventoryController.updateItem);
 
 router.put("/deleteitem", checkAuth, InventoryController.deleteItem);
 

@@ -3,6 +3,7 @@ const User = require("../models/user");
 
 exports.addItem = (req, res, next) => {
   const item = new Inventory({
+    SellerId: req.body.SellerId,
     ItemName: req.body.ItemName,
     TaxPercent: req.body.TaxPercent,
     Hsn: req.body.Hsn,
@@ -13,24 +14,11 @@ exports.addItem = (req, res, next) => {
   item
     .save()
     .then((result) => {
-      const item = result;
-      User.findByIdAndUpdate(
-        { _id: req.body.id },
-        { $push: { Inventory: item } },
-        { new: true }
-      )
-        .then((result) => {
-          res.status(201).json({
-            message: "Item Added Successfully",
-            result: result.Inventory,
-          });
-        })
-        .catch((error) => {
-          res.status(500).json({
-            message: "Item could not be added",
-            result: error,
-          });
-        });
+      console.log(result);
+      res.status(201).json({
+        message: "Item Added Successfully.",
+        result: result,
+      });
     })
     .catch((error) => {
       res.status(500).json({
@@ -38,28 +26,20 @@ exports.addItem = (req, res, next) => {
         result: error,
       });
     });
-  res.status(400);
 };
 
 exports.getInventory = (req, res, next) => {
   const id = req.params.id;
-  User.findById({ _id: id })
+  Inventory.find({ SellerId: id })
     .then((result) => {
-      if (result) {
-        res.status(200).json({
-          message: "data found",
-          result: result.Inventory,
-        });
-      } else {
-        res.status(401).json({
-          message: "user not found",
-          result: "no data",
-        });
-      }
+      res.status(200).json({
+        message: "data Found",
+        result: result,
+      });
     })
     .catch((err) => {
-      res.status(500).json({
-        message: "error has occured",
+      res.status(401).json({
+        message: "No Data Found!",
         result: err,
       });
     });
@@ -70,16 +50,19 @@ exports.getlowStock = (req, res, next) => {
   User.findById({ _id: id })
     .then((result) => {
       const alertQty = result.AlertQty;
-      let arr = [];
-      for (let i = 0; i < result.Inventory.length; i++) {
-        if (result.Inventory[i].Qty < alertQty) {
-          arr.push(result.Inventory[i]);
-        }
-      }
-      res.status(200).json({
-        message: "data found",
-        result: arr,
-      });
+      Inventory.find({ SellerId: id, Qty: { $lte: alertQty } })
+        .then((result) => {
+          return res.status(200).json({
+            message: "data found",
+            result: result,
+          });
+        })
+        .catch((err) => {
+          return res.status(500).json({
+            message: "Error!",
+            result: err,
+          });
+        });
     })
     .catch((err) => {
       res.status(500).json({
@@ -93,16 +76,20 @@ exports.getoutofStock = (req, res, next) => {
   const id = req.params.id;
   User.findById({ _id: id })
     .then((result) => {
-      let arr = [];
-      for (let i = 0; i < result.Inventory.length; i++) {
-        if (result.Inventory[i].Qty <= 0) {
-          arr.push(result.Inventory[i]);
-        }
-      }
-      res.status(200).json({
-        message: "data found",
-        result: arr,
-      });
+      const alertQty = 0;
+      Inventory.find({ SellerId: id, Qty: { $lte: alertQty } })
+        .then((result) => {
+          res.status(200).json({
+            message: "data found",
+            result: result,
+          });
+        })
+        .catch((err) => {
+          res.status(500).json({
+            message: "Error!",
+            result: err,
+          });
+        });
     })
     .catch((err) => {
       res.status(500).json({
@@ -149,58 +136,43 @@ exports.updateItem = (req, res, next) => {
     }
   )
     .then((result) => {
-      User.findOneAndUpdate(
-        { _id: userId, "Inventory._id": req.body._id },
-        {
-          $set: {
-            "Inventory.$.ItemName": req.body.ItemName,
-            "Inventory.$.TaxPercent": req.body.TaxPercent,
-            "Inventory.$.Qty": req.body.Qty,
-            "Inventory.$.Hsn": req.body.Hsn,
-            "Inventory.$.Rate": req.body.Rate,
-          },
-        }
-      )
-        .then((result) => {
-          res.status(201).json({
-            message: "update Successfull",
-            result: result,
-          });
-        })
-        .catch((err) => {
-          res.status(201).json({
-            message: "error occurred",
-            result: err,
-          });
-        });
+      res.status(201).json({ message: "Data Updated.", result: result });
     })
     .catch((err) => {
       res.status(500).json({
-        message: "error occured",
         result: err,
+        mesage: "server error has occurred",
       });
     });
 };
 
 exports.deleteItem = (req, res, next) => {
   const userId = req.body.userId;
-
   const id = req.body.itemid;
 
-  User.findByIdAndUpdate(
-    { _id: userId },
-    { $pull: { Inventory: { _id: id } } },
-    { safe: true, upsert: true }
-  )
+  Inventory.findOneAndDelete({ _id: id })
     .then((result) => {
-      res.status(201).json({
-        message: "item deleted",
-        result: result.Inventory,
-      });
+      User.findByIdAndUpdate(
+        { _id: userId },
+        { $pull: { Inventory: { _id: id } } },
+        { safe: true, upsert: true }
+      )
+        .then((result) => {
+          res.status(201).json({
+            message: "item deleted",
+            result: result.Inventory,
+          });
+        })
+        .catch((err) => {
+          res.status(500).json({
+            message: "delete error",
+            result: err,
+          });
+        });
     })
     .catch((err) => {
       res.status(500).json({
-        message: "delete error",
+        message: "error has occurred while delting",
         result: err,
       });
     });

@@ -3,6 +3,7 @@ import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
 import { Subject } from "rxjs";
 import { environment } from "src/environments/environment";
+import { SnackbarService } from "../snackbar.service";
 
 import { Inventory } from "./inventory.model";
 
@@ -43,15 +44,11 @@ export class InventoryService {
   updateInventory(id) {
     this.InventoryUpdateRequest.next({ bool: true, id: id });
   }
-  getInvenotryItem(id: string) {
-    return this.http.get<{ message: string; result: Inventory }>(
-      BACKEND_URL + "/getinventoryitem/" + id
-    );
-  }
-  updateInventoryData(data: Inventory) {
-    const id = localStorage.getItem("userId");
+
+  updateInventoryData(data) {
+    //const id = localStorage.getItem("userId");
     this.http
-      .put<{ message: string; result }>(BACKEND_URL + "/updateitem/" + id, data)
+      .put<{ message: string; result }>(BACKEND_URL + "/updateitem", data)
       .subscribe((res) => {
         this.router
           .navigateByUrl("/", { skipLocationChange: true })
@@ -60,13 +57,13 @@ export class InventoryService {
           });
       });
   }
-  getLowStock() {
-    const id = localStorage.getItem("userId");
-
-    return this.http.get<{ message: string; result: Inventory[] }>(
-      BACKEND_URL + "/getlowstock/" + id
+  //change data in html
+  getInvenotryItem(id: string) {
+    return this.http.get<{ message: string; result: Inventory }>(
+      BACKEND_URL + "/getinventoryitem/" + id
     );
   }
+
   getOutofStock() {
     const id = localStorage.getItem("userId");
 
@@ -74,6 +71,15 @@ export class InventoryService {
       BACKEND_URL + "/getoutofstock/" + id
     );
   }
+
+  getLowStock() {
+    const id = localStorage.getItem("userId");
+
+    return this.http.get<{ message: string; result: Inventory[] }>(
+      BACKEND_URL + "/getlowstock/" + id
+    );
+  }
+
   getInventory() {
     const id = localStorage.getItem("userId");
     this.http
@@ -86,14 +92,15 @@ export class InventoryService {
           this.InventoryUpdated.next([...this.inventory]);
         },
         (error) => {
-          console.log(error);
+          this.SnackBar.openSnackbar(error.message);
         }
       );
   }
-  addToInventory(data: Inventory) {
+
+  addToInventory(data) {
     const userId = localStorage.getItem("userId");
     const userdata = {
-      id: userId,
+      SellerId: userId,
       ItemName: data.ItemName,
       TaxPercent: data.TaxPercent,
       Hsn: data.Hsn,
@@ -102,16 +109,16 @@ export class InventoryService {
     };
 
     this.http
-      .post<{ message: string; result: Inventory[] }>(
+      .post<{ message: string; result: Inventory }>(
         BACKEND_URL + "/additem",
         userdata
       )
       .subscribe(
         (res) => {
           console.log(this.inventory);
-          this.inventory = res.result;
-
+          this.inventory.push(res.result);
           this.InventoryUpdated.next([...this.inventory]);
+
           this.router
             .navigateByUrl("/", { skipLocationChange: true })
             .then(() => {
@@ -119,7 +126,7 @@ export class InventoryService {
             });
         },
         (error) => {
-          console.log(error);
+          this.SnackBar.openSnackbar(error.message);
         }
       );
   }
@@ -129,5 +136,9 @@ export class InventoryService {
   inventory: Inventory[] = [];
   InventoryUpdated = new Subject();
   InventoryUpdateRequest = new Subject<{ bool: boolean; id: string }>();
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(
+    private http: HttpClient,
+    private SnackBar: SnackbarService,
+    private router: Router
+  ) {}
 }
