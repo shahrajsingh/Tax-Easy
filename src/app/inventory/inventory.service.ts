@@ -34,7 +34,7 @@ export class InventoryService {
           }
         },
         (error) => {
-          console.log(error);
+          this.SnackBar.openSnackbar(error.error.message);
         }
       );
   }
@@ -46,7 +46,6 @@ export class InventoryService {
   }
 
   updateInventoryData(data) {
-    //const id = localStorage.getItem("userId");
     this.http
       .put<{ message: string; result }>(BACKEND_URL + "/updateitem", data)
       .subscribe((res) => {
@@ -57,7 +56,7 @@ export class InventoryService {
           });
       });
   }
-  //change data in html
+
   getInvenotryItem(id: string) {
     return this.http.get<{ message: string; result: Inventory }>(
       BACKEND_URL + "/getinventoryitem/" + id
@@ -92,7 +91,7 @@ export class InventoryService {
           this.InventoryUpdated.next([...this.inventory]);
         },
         (error) => {
-          this.SnackBar.openSnackbar(error.message);
+          this.SnackBar.openSnackbar(error.error.message);
         }
       );
   }
@@ -115,7 +114,6 @@ export class InventoryService {
       )
       .subscribe(
         (res) => {
-          console.log(this.inventory);
           this.inventory.push(res.result);
           this.InventoryUpdated.next([...this.inventory]);
 
@@ -126,7 +124,7 @@ export class InventoryService {
             });
         },
         (error) => {
-          this.SnackBar.openSnackbar(error.message);
+          this.SnackBar.openSnackbar(error.error.message);
         }
       );
   }

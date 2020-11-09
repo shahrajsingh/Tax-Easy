@@ -10,6 +10,7 @@ import { AuthService } from "../auth.service";
 })
 export class LoginComponent implements OnInit {
   isLoading: Boolean;
+  isLoasingIn: Boolean = false;
   constructor(
     private authService: AuthService,
     private snackbar: SnackbarService
@@ -25,7 +26,7 @@ export class LoginComponent implements OnInit {
     } else {
       const mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
       if (form.value.email.match(mailformat)) {
-        this.isLoading;
+        this.isLoasingIn = true;
         this.authService.login(form.value.email, form.value.password);
       } else {
         this.snackbar.openSnackbar("Invalid Email Address!");

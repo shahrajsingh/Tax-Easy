@@ -1,15 +1,5 @@
 const mongoose = require("mongoose");
 const items = mongoose.Schema({
-  SellerId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
-    required: true,
-  },
-  ItemId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Inventory",
-    required: true,
-  },
   ItemName: { type: String, required: true },
   Qty: { type: Number, required: true },
   Rate: { type: Number, required: true },

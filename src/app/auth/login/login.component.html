@@ -1,58 +1,64 @@
-<mat-spinner *ngIf="isLoading"></mat-spinner>
 <div class="container">
-  <mat-card class="login-card">
-    <mat-card-header>
-      <mat-card-title> Login </mat-card-title>
-    </mat-card-header>
-    <mat-divider></mat-divider>
-    <br />
-    <mat-card-content>
-      <form #loginform="ngForm" (submit)="login(loginform)">
-        <mat-form-field appearance="outline">
-          <mat-label>Email</mat-label>
-          <input
-            type="email"
-            required
-            minlength="8"
-            matInput
-            name="email"
-            ngModel
-            #email="ngModel"
-            placeholder="e.g:- johndoe@mail.com"
-          />
-          <mat-error *ngIf="email.invalid">Please enter a valid Mail</mat-error>
-        </mat-form-field>
-        <mat-form-field appearance="outline">
-          <mat-label>Password</mat-label>
-          <input
-            type="password"
-            required
-            minlength="8"
-            matInput
-            name="password"
-            ngModel
-            #password="ngModel"
-          />
-          <mat-error *ngIf="password.invalid"
-            >Please enter a Password</mat-error
-          >
-        </mat-form-field>
-        <button
-          type="submit"
-          mat-raised-button
-          class="login-btn"
-          color="primary"
-        >
-          Login
-        </button>
-      </form>
-      <br />
+  <mat-spinner *ngIf="isLoading" style="margin: auto"></mat-spinner>
+  <div class="login-container" id="login-container">
+    <mat-spinner *ngIf="isLoasingIn" style="margin: auto"></mat-spinner>
+    <mat-card class="login-card" *ngIf="!isLoasingIn">
+      <mat-card-header>
+        <mat-card-title> Login </mat-card-title>
+      </mat-card-header>
       <mat-divider></mat-divider>
       <br />
-      <h4>Don't have a Tax Easy Account?</h4>
-      <button mat-raised-button color="accent" routerLink="/signup">
-        Signup
-      </button>
-    </mat-card-content>
-  </mat-card>
+
+      <mat-card-content>
+        <form #loginform="ngForm" (submit)="login(loginform)">
+          <mat-form-field appearance="outline">
+            <mat-label>Email</mat-label>
+            <input
+              type="email"
+              required
+              minlength="8"
+              matInput
+              name="email"
+              ngModel
+              #email="ngModel"
+              placeholder="e.g:- johndoe@mail.com"
+            />
+            <mat-error *ngIf="email.invalid"
+              >Please enter a valid Mail</mat-error
+            >
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Password</mat-label>
+            <input
+              type="password"
+              required
+              minlength="8"
+              matInput
+              name="password"
+              ngModel
+              #password="ngModel"
+            />
+            <mat-error *ngIf="password.invalid"
+              >Please enter a Password</mat-error
+            >
+          </mat-form-field>
+          <button
+            type="submit"
+            mat-raised-button
+            class="login-btn"
+            color="primary"
+          >
+            Login
+          </button>
+        </form>
+        <br />
+        <mat-divider></mat-divider>
+        <br />
+        <h4>Don't have a Tax Easy Account?</h4>
+        <button mat-raised-button color="accent" routerLink="/signup">
+          Signup
+        </button>
+      </mat-card-content>
+    </mat-card>
+  </div>
 </div>

@@ -4,6 +4,7 @@ import { Subject } from "rxjs";
 import { environment } from "src/environments/environment";
 import { Bills } from "../bills/bills.model";
 import { Inventory } from "../inventory/inventory.model";
+import { SnackbarService } from "../snackbar.service";
 import { Bill } from "./bill.model";
 const BackendUrl = environment.apiUrl + "/bill";
 @Injectable({
@@ -34,10 +35,10 @@ export class BillService {
       BackendUrl + "/getitemnames/" + localStorage.getItem("userId")
     );
   }
-
+  /*
   geInvoiceId() {
     this.http.get<{}>(BackendUrl + "/getinvoiceId");
-  }
+  }*/
 
   IssueInvoice() {
     const issueDate =
@@ -55,21 +56,23 @@ export class BillService {
       ":" +
       this.d.getSeconds();
     const bill = {
-      Id: this.InvoiceId,
       IssuedTo: this.IssuedTo,
       IssueDate: issueDate,
       Items: this.Items,
       Total: this.Total,
+      IssuedBy: localStorage.getItem("userId"),
     };
     this.http
-      .post<{ message: string; result }>(
-        BackendUrl + "/issueinvoice/" + localStorage.getItem("userId"),
-        bill
-      )
-      .subscribe((res) => {
-        alert("bill made");
-        window.location.reload();
-      });
+      .post<{ message: string; result }>(BackendUrl + "/issueinvoice", bill)
+      .subscribe(
+        (res) => {
+          this.snackbar.openSnackbar(res.message);
+          window.location.reload();
+        },
+        (error) => {
+          this.snackbar.openSnackbar(error.error.message);
+        }
+      );
   }
 
   billupdated() {
@@ -83,35 +86,41 @@ export class BillService {
     const backendUrl = environment.apiUrl + "/inventory";
     this.http
       .get<{ message: string; result: Inventory }>(backendUrl + queryParams)
-      .subscribe((res) => {
-        if (res.result.Qty < qty) {
-          alert("Enered Quaantity is not avaliable");
-          return;
-        } else {
-          const taxpercent: number = res.result.TaxPercent;
-          const rate: number = parseFloat(res.result.Rate.toFixed(2));
-          const tax: number = parseFloat(
-            ((taxpercent / 100) * rate * qty).toFixed(2)
-          );
-          const amt: number = parseFloat((rate * qty + tax).toFixed(2));
-          this.Total += amt;
-          this.Total = parseFloat(this.Total.toFixed(2));
-          this.IssuedTo = issuedto;
-          const data: Bill = {
-            ItemName: id,
-            Qty: qty,
-            Rate: rate,
-            TaxPercent: taxpercent,
-            Tax: tax,
-            Amt: amt,
-          };
-          this.Items.push(data);
-          this.billUpdateListener.next({
-            bill: [...this.Items],
-            Total: this.Total,
-          });
+      .subscribe(
+        (res) => {
+          if (res.result.Qty < qty) {
+            this.snackbar.openSnackbar("Entered Quantity is not available");
+            return;
+          } else {
+            const taxpercent: number = res.result.TaxPercent;
+            const rate: number = parseFloat(res.result.Rate.toFixed(2));
+            const tax: number = parseFloat(
+              ((taxpercent / 100) * rate * qty).toFixed(2)
+            );
+            const amt: number = parseFloat((rate * qty + tax).toFixed(2));
+            this.Total += amt;
+            this.Total = parseFloat(this.Total.toFixed(2));
+            this.IssuedTo = issuedto;
+            const data: Bill = {
+              ItemName: id,
+              Qty: qty,
+              Rate: rate,
+              TaxPercent: taxpercent,
+              Tax: tax,
+              Amt: amt,
+            };
+            this.Items.push(data);
+            this.billUpdateListener.next({
+              bill: [...this.Items],
+              Total: this.Total,
+            });
+          }
+        },
+        (error) => {
+          this.snackbar.openSnackbar(error.error.message);
+          console.log(error, error.result);
         }
-      });
+      );
   }
 
   delete(x: number) {
@@ -127,5 +136,5 @@ export class BillService {
   Items: Bill[] = [];
   Total: number = 0;
   billUpdateListener = new Subject<{ bill: Bill[]; Total: number }>();
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private snackbar: SnackbarService) {}
 }

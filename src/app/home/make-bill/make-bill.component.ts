@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { NgForm } from "@angular/forms";
+import { SnackbarService } from "src/app/snackbar.service";
 import { BillService } from "../bill.service";
 
 @Component({
@@ -8,12 +9,22 @@ import { BillService } from "../bill.service";
   styleUrls: ["./make-bill.component.scss"],
 })
 export class MakeBillComponent implements OnInit {
-  constructor(private billService: BillService) {}
+  constructor(
+    private billService: BillService,
+    private snackBar: SnackbarService
+  ) {}
+  isLoading: boolean = true;
   options: string[] = [];
   ngOnInit(): void {
-    this.billService.getProductNames().subscribe((res) => {
-      this.options = res.result;
-    });
+    this.billService.getProductNames().subscribe(
+      (res) => {
+        this.options = res.result;
+        this.isLoading = false;
+      },
+      (error) => {
+        this.snackBar.openSnackbar(error.error.message);
+      }
+    );
   }
   addItem(form: NgForm) {
     if (form.invalid) {

@@ -10,12 +10,15 @@ import { Bills } from "./bills.model";
   styleUrls: ["./bills.component.scss"],
 })
 export class BillsComponent implements OnInit {
+  isLoading: boolean;
   bills: Bills[] = [];
   constructor(private router: Router, private billService: BillService) {}
 
   ngOnInit(): void {
+    this.isLoading = true;
     this.billService.getBills().subscribe((res) => {
       this.bills = res.result;
+      this.isLoading = false;
     });
   }
   viewBill(id) {

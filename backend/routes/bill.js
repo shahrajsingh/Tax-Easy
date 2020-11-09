@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.get("", checkAuth, BillController.getBill);
 
-router.post("/issueinvoice/:id", checkAuth, BillController.issueInvoice);
+router.post("/issueinvoice", checkAuth, BillController.issueInvoice);
 
 router.get("/bills/:id", checkAuth, BillController.getBills);
 

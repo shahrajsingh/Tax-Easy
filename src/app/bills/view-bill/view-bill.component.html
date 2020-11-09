@@ -1,10 +1,11 @@
-<div class="bill-container">
+<mat-spinner *ngIf="isLoading" style="margin: auto"></mat-spinner>
+<div class="bill-container" *ngIf="!isLoading">
   <div class="company-name">
     <h1>{{ CompanyName }}</h1>
   </div>
   <div class="company-address">
     <h3>{{ Address }}</h3>
-  </div>
+  </div> 
   <mat-divider> </mat-divider>
   <div class="invoice-details">
     <h5>Invoice Number:- {{ InvoiceNumber }}</h5>

@@ -179,25 +179,19 @@ exports.deleteItem = (req, res, next) => {
 };
 
 exports.getItemDetails = (req, res, next) => {
-  let data;
-  User.findOne({
-    _id: req.query.userid,
+  console.log(req.query);
+  Inventory.findOne({
+    SellerId: req.query.userid,
+    ItemName: req.query.itemname,
   })
     .then((result) => {
       if (result) {
-        for (let i = 0; i < result.Inventory.length; i++) {
-          if (result.Inventory[i].ItemName === req.query.itemname) {
-            data = result.Inventory[i];
-            break;
-          }
-        }
-
         res.status(200).json({
           message: "item found",
-          result: data,
+          result: result,
         });
       } else {
-        res.status(500).json({
+        res.status(401).json({
           message: "no data",
           result: result,
         });

@@ -3,7 +3,6 @@ import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, ParamMap } from "@angular/router";
 import { Bill } from "src/app/home/bill.model";
 import { BillService } from "src/app/home/bill.service";
-const BackendUrl = "http://localhost:3000/api";
 @Component({
   selector: "app-view-bill",
   templateUrl: "./view-bill.component.html",
@@ -18,7 +17,7 @@ export class ViewBillComponent implements OnInit {
   Address: string;
   total: number;
   InvoiceNumber: string;
-  isLoading: boolean = false;
+  isLoading: boolean = true;
   IssuedTo: string;
   constructor(
     private route: ActivatedRoute,
@@ -29,15 +28,21 @@ export class ViewBillComponent implements OnInit {
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
       if (paramMap.has("id")) {
         this.data.billid = paramMap.get("id");
-        this.billService.getBill(this.data.billid).subscribe((res) => {
-
-          this.Address = res.Address;
-          this.CompanyName = res.CompanyName;
-          this.Date = res.result.IssueDate;
-          this.IssuedTo = res.result.IssuedTo;
-          this.total = res.result.Total;
-          this.bill = res.result.Items;
-        });
+        this.billService.getBill(this.data.billid).subscribe(
+          (res) => {
+            this.Address = res.Address;
+            this.CompanyName = res.CompanyName;
+            this.Date = res.result.IssueDate;
+            this.IssuedTo = res.result.IssuedTo;
+            this.total = res.result.Total;
+            this.bill = res.result.Items;
+            this.InvoiceNumber = res.result._id;
+            this.isLoading = false;
+          },
+          (error) => {
+            console.log(error.error.message);
+          }
+        );
       }
     });
   }

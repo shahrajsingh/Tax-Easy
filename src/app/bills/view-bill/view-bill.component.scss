@@ -2,6 +2,7 @@
   width: 100%;
   border: 1px solid black;
   padding: 8px;
+  margin-left: -8px;
 }
 .company-name {
   text-align: center;
@@ -54,6 +55,15 @@ td {
   text-align: right;
 }
 @media screen and (max-width: 600px) {
+  .bill-container {
+    width: calc(100% - 18px);
+    margin-left: 0px;
+    //margin-right: 8px;
+    overflow: hidden;
+  }
+  table {
+    max-width: 100%;
+  }
   .td {
     max-width: 80px;
     padding: 0px 1px 0px 1px;

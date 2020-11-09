@@ -1,11 +1,12 @@
 const User = require("../models/user");
-
+const Inventory = require("../models/inventory");
+const Bill = require("../models/bill");
 exports.getBills = (req, res, next) => {
-  User.findOne({ _id: req.params.id })
+  Bill.find({ IssuedBy: req.params.id })
     .then((result) => {
       res.status(200).json({
         message: "data found",
-        result: result.Bills,
+        result: result,
       });
     })
     .catch((err) => {
@@ -19,14 +20,27 @@ exports.getBills = (req, res, next) => {
 exports.getBill = (req, res, next) => {
   User.findOne({ _id: req.query.userid })
     .then((result) => {
-      res.status(200).json({
-        message: "data found",
-        result: result.Bills[req.query.billid],
-        CompanyName: result.CompanyName,
-        Address: result.Address,
-      });
+      const CompanyName = result.CompanyName;
+      const Address = result.Address;
+      Bill.findById({ _id: req.query.billid })
+        .then((result) => {
+          res.status(200).json({
+            message: "data found",
+            result: result,
+            CompanyName: CompanyName,
+            Address: Address,
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+          res.status(500).json({
+            message: "server error",
+            result: err,
+          });
+        });
     })
     .catch((err) => {
+      console.log(err);
       res.status(500).json({
         message: "server error",
         result: err,
@@ -35,53 +49,45 @@ exports.getBill = (req, res, next) => {
 };
 
 exports.issueInvoice = (req, res, next) => {
-  User.findByIdAndUpdate({ _id: req.params.id }, { $push: { Bills: req.body } })
+  const bill = new Bill({
+    IssuedBy: req.body.IssuedBy,
+    IssuedTo: req.body.IssuedTo,
+    IssueDate: req.body.IssueDate,
+    Items: req.body.Items,
+    Total: req.body.Total,
+  });
+  bill
+    .save()
     .then((result) => {
-      User.findById({ _id: req.params.id })
-        .then((result) => {
-          let arr = result.Inventory;
-          let items = req.body.Items;
-          for (let a = 0; a < items.length; a++) {
-            for (let b = 0; b < arr.length; b++) {
-              if (
-                items[a].ItemName === arr[b].ItemName &&
-                items[a].Rate === arr[b].Rate
-              ) {
-                arr[b].Qty -= items[a].Qty;
-                break;
-              }
-            }
-          }
-          User.findByIdAndUpdate({ _id: req.params.id }, { Inventory: arr })
-            .then((result) => {
-              res.status(201).json({
-                message: "update successfull",
-                result: "success",
-              });
-            })
-            .catch((err) => {
-              console.log(err);
-              res.status(500).json({ message: "error has occurred at 61" });
-            });
-        })
-        .catch((err) => {
-          res.status(500).json({ message: "error has occurred at 64" });
+      if (result) {
+        res.status(201).json({
+          message: "Bill Issued Successfully",
+          result: "success",
         });
+      } else {
+        console.log(result);
+        res.status(500).json({
+          message: "error occurred while saving",
+          result: result,
+        });
+      }
     })
     .catch((err) => {
+      console.log(err);
       res.status(500).json({
-        message: "server error",
+        message: "server error has occured",
         result: err,
       });
     });
 };
 
 exports.getItemNames = (req, res, next) => {
-  User.findById({ _id: req.params.id })
+  Inventory.find({ SellerId: req.params.id })
     .then((result) => {
+      console.log(result);
       let arr = [];
-      for (let i = 0; i < result.Inventory.length; i++) {
-        arr.push(result.Inventory[i].ItemName);
+      for (let i = 0; i < result.length; i++) {
+        arr.push(result[i].ItemName);
       }
       res.status(200).json({
         message: "item found",
@@ -89,6 +95,7 @@ exports.getItemNames = (req, res, next) => {
       });
     })
     .catch((err) => {
+      console.log(err);
       res.status(500).json({
         message: "error has occurred at 334",
         result: err,

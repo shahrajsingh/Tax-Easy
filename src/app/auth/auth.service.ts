@@ -47,6 +47,7 @@ export class AuthService {
           this.router.navigate(["/login"]);
         },
         (error) => {
+          console.log(error.error);
           this.snackBarService.openSnackbar("Signup Failed!");
           this.authStatusListener.next(false);
         }

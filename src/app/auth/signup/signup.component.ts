@@ -12,6 +12,7 @@ import { UserData } from "../userData.model";
 })
 export class SignupComponent implements OnInit {
   isLoading: boolean;
+  isLoadingIn: boolean = false;
   id = "auto";
   signupdata: UserData = {
     Name: null,
@@ -23,11 +24,14 @@ export class SignupComponent implements OnInit {
     Product_ID_Initial: null,
     AlertQty: null,
   };
-  constructor(private authService: AuthService,private snackBar:SnackbarService) {}
+  constructor(
+    private authService: AuthService,
+    private snackBar: SnackbarService
+  ) {}
 
   ngOnInit(): void {
     this.isLoading = true;
-    setTimeout(() => (this.isLoading = false), 1500);
+    setTimeout(() => (this.isLoading = false), 1200);
   }
   personaldetails(form: NgForm) {
     if (form.invalid) {
@@ -57,21 +61,21 @@ export class SignupComponent implements OnInit {
           Email
         )
       ) {
-        this.snackBar.openSnackbar('Invalid Email Address!');
+        this.snackBar.openSnackbar("Invalid Email Address!");
         return;
       }
       this.signupdata.Email = Email;
       let Password: string = form.value.password;
       if (!/^[a-zA-Z0-9]*$/.test(Password) || Password.length < 8) {
-        this.snackBar.openSnackbar('Enter a valid Password!');
+        this.snackBar.openSnackbar("Enter a valid Password!");
         return;
       }
       if (Password != form.value.cpassword) {
-        this.snackBar.openSnackbar('Password MisMatch');
+        this.snackBar.openSnackbar("Password MisMatch");
         return;
       }
       this.signupdata.Password = Password;
-      this.isLoading = true;
+      this.isLoadingIn = true;
       this.authService.signup(this.signupdata);
     }
   }
