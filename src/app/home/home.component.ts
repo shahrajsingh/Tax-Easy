@@ -1,4 +1,5 @@
 import { Component, OnInit } from "@angular/core";
+import { BillService } from "./bill.service";
 
 @Component({
   selector: "app-home",
@@ -7,7 +8,7 @@ import { Component, OnInit } from "@angular/core";
 })
 export class HomeComponent implements OnInit {
   isMakingBill: boolean = false;
-  constructor() {}
+  constructor(private billService: BillService) {}
 
   ngOnInit(): void {}
   isMaking() {
@@ -15,5 +16,6 @@ export class HomeComponent implements OnInit {
   }
   notMaking() {
     this.isMakingBill = false;
+    this.billService.cancelBill();
   }
 }

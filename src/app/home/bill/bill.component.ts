@@ -37,6 +37,7 @@ export class BillComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+    this.Items = this.billService.getItems();
     this.authService.getUserData().subscribe((res) => {
       (this.Address = res.result.address),
         (this.CompanyName = res.result.companyName);

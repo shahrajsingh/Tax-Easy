@@ -1,6 +1,7 @@
 const User = require("../models/user");
 const Inventory = require("../models/inventory");
 const Bill = require("../models/bill");
+
 exports.getBills = (req, res, next) => {
   Bill.find({ IssuedBy: req.params.id })
     .then((result) => {
@@ -59,18 +60,42 @@ exports.issueInvoice = (req, res, next) => {
   bill
     .save()
     .then((result) => {
-      if (result) {
-        res.status(201).json({
-          message: "Bill Issued Successfully",
-          result: "success",
-        });
-      } else {
-        console.log(result);
-        res.status(500).json({
-          message: "error occurred while saving",
-          result: result,
+      bulkUpdateOperations = [];
+      const mongoose = require("mongoose");
+      for (let a = 0; a < req.body.Items.length; a++) {
+        const value = -req.body.Items[a].Qty;
+        bulkUpdateOperations.push({
+          updateOne: {
+            filter: { _id: mongoose.Types.ObjectId(req.body.Items[a]._id) },
+            update: {
+              $inc: { Qty: value },
+            },
+          },
         });
       }
+      Inventory.collection
+        .bulkWrite(bulkUpdateOperations)
+        .then((result) => {
+          console.log(result);
+          if (result) {
+            res.status(201).json({
+              message: "Bill Issued Successfully",
+              result: "success",
+            });
+          } else {
+            //console.log(result);
+            res.status(500).json({
+              message: "error occurred while saving",
+              result: result,
+            });
+          }
+        })
+        .catch((error) => {
+          res.status(500).json({
+            message: "error has occurred at 90",
+            result: error,
+          });
+        });
     })
     .catch((err) => {
       console.log(err);
@@ -84,10 +109,9 @@ exports.issueInvoice = (req, res, next) => {
 exports.getItemNames = (req, res, next) => {
   Inventory.find({ SellerId: req.params.id })
     .then((result) => {
-      console.log(result);
       let arr = [];
       for (let i = 0; i < result.length; i++) {
-        arr.push(result[i].ItemName);
+        arr.push({ id: result[i]._id, name: result[i].ItemName });
       }
       res.status(200).json({
         message: "item found",

@@ -4,7 +4,7 @@
   <h2>Add Items</h2>
   <form #itemform="ngForm" (submit)="addItem(itemform)">
     <mat-form-field appearance="outline">
-      <mat-label>Item Name</mat-label>
+      <mat-label>Item Id or Name</mat-label>
       <input
         name="item"
         matInput
@@ -18,8 +18,8 @@
         [matAutocomplete]="auto"
       />
       <mat-autocomplete #auto="matAutocomplete">
-        <mat-option *ngFor="let option of options" [value]="option">
-          {{ option }}
+        <mat-option *ngFor="let option of options" [value]="option.id">
+          {{ option.name }}
         </mat-option>
       </mat-autocomplete>
       <mat-error *ngIf="item.invalid"> Id is required </mat-error>

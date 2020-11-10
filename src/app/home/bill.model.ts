@@ -1,4 +1,5 @@
 export interface Bill {
+  _id: string;
   ItemName: string;
   Qty: number;
   Rate: number;

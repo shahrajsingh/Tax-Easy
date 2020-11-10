@@ -179,10 +179,9 @@ exports.deleteItem = (req, res, next) => {
 };
 
 exports.getItemDetails = (req, res, next) => {
-  console.log(req.query);
   Inventory.findOne({
     SellerId: req.query.userid,
-    ItemName: req.query.itemname,
+    _id: req.query.itemid,
   })
     .then((result) => {
       if (result) {

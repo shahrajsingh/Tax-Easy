@@ -14,7 +14,7 @@ export class MakeBillComponent implements OnInit {
     private snackBar: SnackbarService
   ) {}
   isLoading: boolean = true;
-  options: string[] = [];
+  options = [];
   ngOnInit(): void {
     this.billService.getProductNames().subscribe(
       (res) => {
@@ -30,6 +30,7 @@ export class MakeBillComponent implements OnInit {
     if (form.invalid) {
       return;
     } else {
+      console.log(form.value.item);
       this.billService.getDetails(
         form.value.item,
         form.value.qty,

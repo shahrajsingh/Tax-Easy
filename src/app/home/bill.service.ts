@@ -67,6 +67,7 @@ export class BillService {
       .subscribe(
         (res) => {
           this.snackbar.openSnackbar(res.message);
+          this.cancelBill();
           window.location.reload();
         },
         (error) => {
@@ -80,20 +81,56 @@ export class BillService {
   }
 
   getDetails(id: string, qty: number, issuedto: string) {
+    if (qty < 1) {
+      this.snackbar.openSnackbar("Quantity cannot be less than 1");
+      return;
+    }
     const queryParams = `?userid=${localStorage.getItem(
       "userId"
-    )}&itemname=${id}`;
+    )}&itemid=${id}`;
     const backendUrl = environment.apiUrl + "/inventory";
     this.http
       .get<{ message: string; result: Inventory }>(backendUrl + queryParams)
       .subscribe(
         (res) => {
+          for (let i = 0; i < this.Items.length; i++) {
+            if (this.Items[i]._id === id) {
+              if (this.Items[i].Qty + qty > res.result.Qty) {
+                this.snackbar.openSnackbar(
+                  "Quantity excedding than available!"
+                );
+                return;
+              } else {
+                this.Items[i].Qty += qty;
+                this.Items[i].Tax = parseFloat(
+                  (
+                    (this.Items[i].TaxPercent / 100) *
+                    this.Items[i].Rate *
+                    this.Items[i].Qty
+                  ).toFixed(2)
+                );
+                this.Total -= parseFloat(this.Items[i].Amt.toFixed(2));
+                this.Items[i].Amt = parseFloat(
+                  (
+                    this.Items[i].Rate * this.Items[i].Qty +
+                    this.Items[i].Tax
+                  ).toFixed(2)
+                );
+                this.Total += parseFloat(this.Items[i].Amt.toFixed(2));
+                this.billUpdateListener.next({
+                  bill: [...this.Items],
+                  Total: this.Total,
+                });
+                return;
+              }
+            }
+          }
           if (res.result.Qty < qty) {
             this.snackbar.openSnackbar("Entered Quantity is not available");
             return;
           } else {
             const taxpercent: number = res.result.TaxPercent;
-            const rate: number = parseFloat(res.result.Rate.toFixed(2));
+            const rate: number = res.result.Rate;
             const tax: number = parseFloat(
               ((taxpercent / 100) * rate * qty).toFixed(2)
             );
@@ -102,7 +139,8 @@ export class BillService {
             this.Total = parseFloat(this.Total.toFixed(2));
             this.IssuedTo = issuedto;
             const data: Bill = {
-              ItemName: id,
+              _id: res.result._id,
+              ItemName: res.result.ItemName,
               Qty: qty,
               Rate: rate,
               TaxPercent: taxpercent,
@@ -128,6 +166,16 @@ export class BillService {
     this.Total = parseFloat(this.Total.toFixed(2));
     this.Items.splice(x, 1);
     this.billUpdateListener.next({ bill: [...this.Items], Total: this.Total });
+  }
+
+  cancelBill() {
+    this.Items = [];
+    this.Total = undefined;
+    this.billUpdateListener.next({ bill: [...this.Items], Total: this.Total });
+  }
+
+  getItems() {
+    return [...this.Items];
   }
 
   InvoiceId: string;
