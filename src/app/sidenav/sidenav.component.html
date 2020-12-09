@@ -12,4 +12,11 @@
     <mat-icon mat-list-icon>store</mat-icon>
     Inventory
   </a>
+  <div id="account">Account</div>
+  <a mat-list-item routerLink="account"
+    ><mat-icon mat-list-icon>account_box</mat-icon>Your Account</a
+  >
+  <mat-list-item (click)="logout()"
+    ><mat-icon mat-list-icon>power_settings_new</mat-icon>Logout</mat-list-item
+  >
 </mat-nav-list>

@@ -1,3 +1,7 @@
+mat-toolbar {
+  background-color: #3f51b5;
+  color: white;
+}
 .dash-container {
   display: flex;
   flex-flow: column;
@@ -9,12 +13,17 @@
   font-size: 24px;
   font-weight: 600;
   text-shadow: 2px 2px rgba($color: #000000, $alpha: 0.3);
+  cursor: pointer;
+}
+.h1:focus {
+  outline: none;
 }
 .auth-btn {
   position: absolute;
   right: 0;
+  font-weight: 600;
   margin-right: 20px;
-  font-size: 16px;
+  font-size: 24px;
   font-family: "Open Sans", sans-serif;
 }
 .sidenav-container {

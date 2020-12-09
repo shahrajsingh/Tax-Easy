@@ -46,17 +46,27 @@ exports.userLogin = (req, res, next) => {
       return bcrypt.compare(req.body.password, user.Password);
     })
     .then((result) => {
-      const token = jwt.sign(
-        { email: fetchedUser.email, userId: fetchedUser._id },
-        process.env.JWT_KEY,
-        { expiresIn: "8h" }
-      );
-      res.status(200).json({
-        token: token,
-        expiresIn: 3600 * 8,
-        userId: fetchedUser._id,
-        Ls: fetchedUser.AlertQty,
-      });
+      if (result) {
+        const token = jwt.sign(
+          {
+            email: fetchedUser.email,
+            userId: fetchedUser._id,
+          },
+          process.env.JWT_KEY,
+          { expiresIn: "8h" }
+        );
+        res.status(200).json({
+          token: token,
+          expiresIn: 3600 * 8,
+          userId: fetchedUser._id,
+          Ls: fetchedUser.AlertQty,
+          CompanyName: fetchedUser.CompanyName,
+        });
+      } else {
+        res.status(401).json({
+          message: "Invalid Login Data!",
+        });
+      }
     })
     .catch((err) => {
       console.log("error at " + err);

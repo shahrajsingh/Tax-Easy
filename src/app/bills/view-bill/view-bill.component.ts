@@ -1,4 +1,3 @@
-import { HttpClient } from "@angular/common/http";
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, ParamMap } from "@angular/router";
 import { Bill } from "src/app/home/bill.model";
@@ -19,6 +18,7 @@ export class ViewBillComponent implements OnInit {
   InvoiceNumber: string;
   isLoading: boolean = true;
   IssuedTo: string;
+
   constructor(
     private route: ActivatedRoute,
     private billService: BillService
@@ -45,5 +45,8 @@ export class ViewBillComponent implements OnInit {
         );
       }
     });
+  }
+  print() {
+    window.print();
   }
 }

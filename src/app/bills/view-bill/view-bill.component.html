@@ -1,11 +1,11 @@
 <mat-spinner *ngIf="isLoading" style="margin: auto"></mat-spinner>
-<div class="bill-container" *ngIf="!isLoading">
+<div class="bill-container" id="bill-container" *ngIf="!isLoading">
   <div class="company-name">
     <h1>{{ CompanyName }}</h1>
   </div>
   <div class="company-address">
     <h3>{{ Address }}</h3>
-  </div> 
+  </div>
   <mat-divider> </mat-divider>
   <div class="invoice-details">
     <h5>Invoice Number:- {{ InvoiceNumber }}</h5>
@@ -39,3 +39,12 @@
   <mat-divider></mat-divider>
   <h5 style="text-align: center">Thank you for Shopping with Us :)</h5>
 </div>
+<button
+  id="print"
+  mat-raised-button
+  color="primary"
+  *ngIf="!isLoading"
+  (click)="print()"
+>
+  Print
+</button>

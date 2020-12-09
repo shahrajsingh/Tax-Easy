@@ -1,5 +1,6 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnDestroy, OnInit } from "@angular/core";
 import { NgForm } from "@angular/forms";
+import { Subscription } from "rxjs";
 import { SnackbarService } from "src/app/snackbar.service";
 import { AuthService } from "../auth.service";
 
@@ -8,15 +9,23 @@ import { AuthService } from "../auth.service";
   templateUrl: "./login.component.html",
   styleUrls: ["./login.component.scss"],
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
   isLoading: Boolean;
   isLoasingIn: Boolean = false;
+  private AuthsStatusListnerSub: Subscription;
   constructor(
     private authService: AuthService,
     private snackbar: SnackbarService
   ) {}
 
   ngOnInit(): void {
+    this.AuthsStatusListnerSub = this.authService
+      .getAuthStatusListener()
+      .subscribe((result) => {
+        console.log("data");
+
+        this.isLoasingIn = false;
+      });
     this.isLoading = true;
     setTimeout(() => (this.isLoading = false), 1500);
   }
@@ -34,5 +43,8 @@ export class LoginComponent implements OnInit {
         return;
       }
     }
+  }
+  ngOnDestroy() {
+    this.AuthsStatusListnerSub.unsubscribe();
   }
 }

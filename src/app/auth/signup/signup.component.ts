@@ -1,5 +1,6 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnDestroy, OnInit } from "@angular/core";
 import { NgForm } from "@angular/forms";
+import { Subscription } from "rxjs";
 import { SnackbarService } from "src/app/snackbar.service";
 
 import { AuthService } from "../auth.service";
@@ -10,10 +11,11 @@ import { UserData } from "../userData.model";
   templateUrl: "./signup.component.html",
   styleUrls: ["./signup.component.scss"],
 })
-export class SignupComponent implements OnInit {
+export class SignupComponent implements OnInit, OnDestroy {
   isLoading: boolean;
   isLoadingIn: boolean = false;
   id = "auto";
+  private authStatusListenerSub: Subscription;
   signupdata: UserData = {
     Name: null,
     CompanyName: null,
@@ -30,6 +32,12 @@ export class SignupComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.authStatusListenerSub = this.authService
+      .getAuthStatusListener()
+      .subscribe((result) => {
+        this.isLoading = false;
+        this.isLoadingIn = false;
+      });
     this.isLoading = true;
     setTimeout(() => (this.isLoading = false), 1200);
   }
@@ -78,5 +86,8 @@ export class SignupComponent implements OnInit {
       this.isLoadingIn = true;
       this.authService.signup(this.signupdata);
     }
+  }
+  ngOnDestroy() {
+    this.authStatusListenerSub.unsubscribe();
   }
 }
