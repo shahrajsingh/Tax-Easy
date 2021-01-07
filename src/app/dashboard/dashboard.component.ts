@@ -17,6 +17,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.authService.autoAuthUser();
     this.isAuth = this.authService.getIsAuth();
     this.CompanyName = this.authService.getCompanyName();
+
     this.authListenerSub = this.authService
       .getAuthStatusListener()
       .subscribe((res: boolean) => {
